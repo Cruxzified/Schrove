@@ -146,15 +146,15 @@ function AnimatedBus() {
     return () => observer.disconnect();
   }, []);
 
-  const travelDistance = Math.max(trackWidth - BUS_WIDTH - 40, 0);
+  const travelDistance = Math.max(trackWidth - BUS_WIDTH, 0);
 
   // Advanced Cinematic Animation Sequence
-  // 0% - 30%: Acceleration + Travel Right
-  // 30%: Smooth deceleration + Impact
-  // 30% - 35%: Micro-rebound
-  // 35% - 45%: Pivot/Turn (Rotation)
-  // 45% - 90%: Travel Left (Slow, steady)
-  // 90% - 100%: Reset/Pause
+  // 0% - 28%: Acceleration + Travel Right (Impact at 28%)
+  // 28%: Impact + Shake start
+  // 28% - 32%: Micro-rebound
+  // 32% - 42%: Pivot/Turn (Rotation)
+  // 42% - 92%: Travel Left (Slow, steady)
+  // 92% - 100%: Reset/Pause
   
   const busX = [0, travelDistance, travelDistance - 8, travelDistance, 0, 0];
   const busRotateY = [0, 0, 0, 180, 180, 0];
@@ -188,7 +188,7 @@ function AnimatedBus() {
         <div className="absolute inset-x-0 top-1/2 h-[2px] w-full -translate-y-1/2 border-t border-dashed border-white/10 opacity-40" />
       </div>
 
-      <div ref={trackRef} className="absolute inset-x-[8%] top-1/2 h-20 -translate-y-1/2 overflow-visible">
+      <div ref={trackRef} className="absolute left-[8%] right-0 top-1/2 h-20 -translate-y-1/2 overflow-visible">
         <motion.div
           className="absolute top-0 will-change-transform"
           animate={shouldReduceMotion ? { x: travelDistance * 0.5 } : { 
