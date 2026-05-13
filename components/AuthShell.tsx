@@ -242,7 +242,16 @@ function SignupHero() {
 
   return (
     <motion.section 
-      className="relative flex min-h-[420px] flex-col overflow-hidden bg-[#010409] !px-6 !py-8 text-white sm:!px-10 lg:min-h-screen lg:w-[52%] lg:!px-12 xl:!px-16"
+      className="relative flex min-h-[420px] flex-col overflow-hidden bg-[#020617] !px-6 !py-8 text-white sm:!px-10 lg:min-h-screen lg:w-[52%] lg:!px-12 xl:!px-16"
+      animate={shouldReduceMotion ? undefined : {
+        x: [0, 0, 4, -4, 2, -1, 0, 0], // The "Bumpy Screen" Shake
+      }}
+      transition={{
+        duration: 14,
+        repeat: Infinity,
+        times: [0, 0.28, 0.285, 0.29, 0.295, 0.3, 0.31, 1],
+        ease: "easeInOut"
+      }}
     >
       {/* Cinematic Atmosphere */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,#1e1b4b_0%,transparent_50%)] opacity-40" />
@@ -250,94 +259,84 @@ function SignupHero() {
       
       {/* Grid Texture */}
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay" />
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_80%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:64px_64px] opacity-20" />
 
       {/* Atmospheric Glows */}
-      <div className="absolute inset-x-[5%] top-[10%] h-[600px] w-[600px] rounded-full bg-indigo-500/5 blur-[140px]" />
-      <div className="absolute bottom-[-5%] left-[10%] h-96 w-96 rounded-full bg-violet-600/10 blur-[120px]" />
+      <div className="absolute inset-x-[10%] top-[15%] h-[500px] w-[500px] rounded-full bg-violet-600/10 blur-[120px]" />
+      <div className="absolute bottom-[-10%] left-[-5%] h-80 w-80 rounded-full bg-cyan-500/10 blur-[100px]" />
 
       {particles.map((className, index) => (
         <motion.span
           key={className}
-          className={`absolute rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.3)] ${className}`}
-          animate={shouldReduceMotion ? undefined : { opacity: [0.1, 0.4, 0.1], scale: [0.8, 1.2, 0.8], y: [0, -20, 0] }}
-          transition={shouldReduceMotion ? undefined : { duration: 5 + index * 0.5, repeat: Infinity, ease: 'easeInOut', delay: index * 0.5 }}
+          className={`absolute rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,0.4)] ${className}`}
+          animate={shouldReduceMotion ? undefined : { opacity: [0.1, 0.5, 0.1], scale: [0.8, 1.1, 0.8] }}
+          transition={shouldReduceMotion ? undefined : { duration: 4 + index * 0.4, repeat: Infinity, ease: 'easeInOut', delay: index * 0.4 }}
           aria-hidden="true"
         />
       ))}
 
       <div className="relative z-20 flex items-center">
-        <div className="flex items-center gap-3">
-          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/20">
-            <div className="h-4 w-4 bg-white/20 rounded-sm rotate-45" />
-          </div>
-          <div className="text-2xl font-black tracking-tighter text-white">Schrove<span className="text-violet-500">.</span></div>
-        </div>
+        <div className="text-2xl font-black tracking-tighter text-white">Schrove<span className="text-violet-500">.</span></div>
       </div>
 
-      <div className="relative z-10 flex flex-1 flex-col items-center justify-center !py-12">
+      <div className="relative z-10 flex flex-1 flex-col items-center justify-center !py-10">
         <motion.div
-          className="mx-auto max-w-2xl text-center"
-          initial={shouldReduceMotion ? false : { opacity: 0, y: 30 }}
+          className="mx-auto max-w-xl text-center"
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 15 }}
           animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <div className="!mb-6 inline-flex items-center gap-2 rounded-full border border-white/5 bg-white/5 !px-4 !py-1.5 backdrop-blur-md">
-            <div className="h-1.5 w-1.5 rounded-full bg-violet-500 animate-pulse" />
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-300">Operational Intelligence</span>
-          </div>
-          
-          <h1 className="text-balance text-6xl font-black leading-[1.05] tracking-tight text-white sm:text-7xl xl:text-8xl">
+          <h1 className="text-balance text-5xl font-black leading-[1.1] tracking-tight text-white sm:text-6xl xl:text-7xl">
             Modern Transport
-            <span className="block bg-gradient-to-r from-violet-200 via-indigo-200 to-cyan-100 bg-clip-text text-transparent opacity-90">Intelligence</span>
+            <span className="block bg-gradient-to-r from-violet-400 via-indigo-300 to-cyan-300 bg-clip-text text-transparent">Intelligence</span>
           </h1>
-          
-          <p className="mx-auto !mt-8 max-w-lg text-lg font-medium leading-relaxed text-slate-400/80">
-            Provisioning the next generation of multi-tenant school transport infrastructure. Intelligent, automated, and secure.
+          <p className="mx-auto !mt-6 max-w-md text-base font-medium leading-relaxed text-slate-400">
+            A premium command center for school fleet operations. Effortless, automated, and hyper-secure.
           </p>
-
-          <div className="!mt-12 flex items-center justify-center gap-8 opacity-40">
-            {['Fleet AI', 'Live Telemetry', 'Secure SSN'].map((tech) => (
-              <span key={tech} className="text-[10px] font-bold uppercase tracking-[0.25em] text-white whitespace-nowrap">{tech}</span>
-            ))}
-          </div>
         </motion.div>
       </div>
 
       <AnimatedBus />
+
+      {/* Feature Highlights - Restored Chips */}
+      <div className="relative z-20 !mb-4 flex flex-wrap justify-center gap-4">
+        {[
+          { label: 'Real-time GPS', icon: '📡' },
+          { label: 'AI Optimization', icon: '🤖' },
+          { label: 'Cloud Security', icon: '🔒' }
+        ].map((feat, i) => (
+          <motion.div
+            key={feat.label}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 + i * 0.1 }}
+            className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 !px-3.5 !py-2 backdrop-blur-md"
+          >
+            <span className="text-sm">{feat.icon}</span>
+            <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-slate-300">{feat.label}</span>
+          </motion.div>
+        ))}
+      </div>
     </motion.section>
   );
 }
 
 function SignupAuthShell({ children }: AuthShellProps) {
   return (
-    <div className="h-screen overflow-y-auto bg-[#010409] text-slate-900 lg:flex lg:overflow-hidden">
+    <div className="h-screen overflow-y-auto bg-[#020617] text-slate-900 lg:flex lg:overflow-hidden">
       <SignupHero />
-      <main className="relative flex min-h-screen flex-1 items-center justify-center overflow-hidden bg-[#010409] !px-5 !py-10 sm:!px-8 lg:h-screen lg:w-[48%] lg:overflow-y-auto lg:!px-10 xl:!px-14">
-        {/* Soft edge spill from hero */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-64 bg-gradient-to-r from-violet-600/5 via-transparent to-transparent lg:block" />
+      <main className="relative flex min-h-screen flex-1 items-center justify-center overflow-hidden bg-[#020617] !px-5 !py-10 sm:!px-8 lg:h-screen lg:w-[48%] lg:overflow-y-auto lg:!px-10 xl:!px-14">
+        {/* Subtle Boundary Transition */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_0%_50%,rgba(124,58,237,0.08),transparent_40%),radial-gradient(circle_at_80%_20%,rgba(59,130,246,0.05),transparent_40%)]" />
         
-        {/* Cinematic Ambient Glows */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_40%_60%,#1e1b4b_0%,transparent_60%)] opacity-20" />
+        <div className="pointer-events-none absolute left-0 top-0 h-full w-px bg-gradient-to-b from-transparent via-white/5 to-transparent hidden lg:block" />
         
-        <div className="relative z-10 w-full max-w-[480px] transform-gpu">
-          {/* Premium Form Card */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.98, y: 10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="group relative overflow-hidden rounded-[40px] border border-white/10 bg-white shadow-[0_40px_100px_-20px_rgba(0,0,0,0.6)]"
-          >
-            {/* Subtle inner highlight */}
-            <div className="absolute inset-0 pointer-events-none rounded-[40px] border border-white/20 opacity-50" />
-            
-            <div className="relative !p-10 sm:!p-12">
+        <div className="relative z-10 w-full max-w-[460px] transform-gpu">
+          <div className="overflow-hidden rounded-[32px] border border-white/10 bg-white shadow-[0_32px_120px_-20px_rgba(0,0,0,0.8)]">
+            <div className="!p-8 sm:!p-10">
               {children}
             </div>
-          </motion.div>
-          
-          {/* Subtle reflection below card */}
-          <div className="mt-8 h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+          </div>
         </div>
       </main>
     </div>
