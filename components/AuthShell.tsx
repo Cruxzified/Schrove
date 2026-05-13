@@ -275,10 +275,6 @@ function SignupHero() {
         />
       ))}
 
-      <div className="relative z-20 flex items-center">
-        <div className="text-2xl font-black tracking-tighter text-white">Schrove<span className="text-violet-500">.</span></div>
-      </div>
-
       <div className="relative z-10 flex flex-1 flex-col items-center justify-center !py-10">
         <motion.div
           className="mx-auto max-w-xl text-center"
@@ -323,7 +319,12 @@ function SignupHero() {
 
 function SignupAuthShell({ children }: AuthShellProps) {
   return (
-    <div className="h-screen overflow-y-auto bg-[#020617] text-slate-900 lg:flex lg:overflow-hidden">
+    <div className="relative h-screen overflow-y-auto bg-[#020617] text-slate-900 lg:flex lg:overflow-hidden">
+      {/* Unified Top Bar */}
+      <header className="absolute left-0 right-0 top-0 z-[100] flex h-20 items-center !px-6 sm:!px-10 lg:!px-12 xl:!px-16">
+        <div className="text-2xl font-black tracking-tighter text-white">Schrove<span className="text-violet-500">.</span></div>
+      </header>
+
       <SignupHero />
       <main className="relative flex min-h-screen flex-1 items-center justify-center overflow-hidden bg-[#020617] !px-5 !py-10 sm:!px-8 lg:h-screen lg:w-[48%] lg:overflow-y-auto lg:!px-10 xl:!px-14">
         {/* Subtle Boundary Transition */}
