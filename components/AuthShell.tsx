@@ -252,32 +252,33 @@ function SignupHero() {
           <p className="mx-auto !mt-6 max-w-[280px] text-sm font-medium leading-relaxed text-slate-400 sm:max-w-md sm:text-base">
             The next generation of fleet management. Secure, automated, and built for the most complex school operations.
           </p>
-
-          <div className="!mt-10 flex flex-wrap justify-center gap-6">
-            {[
-              { label: 'Real-time GPS', icon: '📡' },
-              { label: 'AI Routes', icon: '🤖' },
-              { label: 'Secure SSN', icon: '🔒' }
-            ].map((feat, i) => (
-              <motion.div
-                key={feat.label}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.5 + i * 0.1 }}
-                className="flex items-center gap-2 rounded-2xl border border-white/5 bg-white/5 !px-4 !py-2 backdrop-blur-md"
-              >
-                <span className="text-sm">{feat.icon}</span>
-                <span className="text-[11px] font-bold uppercase tracking-widest text-slate-300">{feat.label}</span>
-              </motion.div>
-            ))}
-          </div>
         </motion.div>
       </div>
 
       <AnimatedBus />
+
+      {/* Feature Highlights - Moved below bus */}
+      <div className="relative z-20 !mb-8 flex flex-wrap justify-center gap-6">
+        {[
+          { label: 'Real-time GPS', icon: '📡' },
+          { label: 'AI Routes', icon: '🤖' },
+          { label: 'Secure SSN', icon: '🔒' }
+        ].map((feat, i) => (
+          <motion.div
+            key={feat.label}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.5 + i * 0.1 }}
+            className="flex items-center gap-2 rounded-2xl border border-white/5 bg-white/5 !px-4 !py-2 backdrop-blur-md"
+          >
+            <span className="text-sm">{feat.icon}</span>
+            <span className="text-[11px] font-bold uppercase tracking-widest text-slate-300">{feat.label}</span>
+          </motion.div>
+        ))}
+      </div>
       
       {/* Smooth Transition Overlay */}
-      <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-64 bg-gradient-to-l from-slate-950 via-slate-950/40 to-transparent lg:block" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-64 bg-gradient-to-l from-slate-900 via-slate-900/40 to-transparent lg:block" />
     </motion.section>
   );
 }
@@ -286,15 +287,17 @@ function SignupAuthShell({ children }: AuthShellProps) {
   return (
     <div className="h-screen overflow-y-auto bg-slate-950 text-slate-900 lg:flex lg:overflow-hidden">
       <SignupHero />
-      <main className="relative flex min-h-screen flex-1 items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_0%_50%,rgba(124,58,237,0.18),transparent_42%),radial-gradient(circle_at_88%_10%,rgba(124,58,237,0.1),transparent_30%),linear-gradient(180deg,#fbfbff_0%,#f8faff_100%)] !px-5 !py-10 sm:!px-8 lg:h-screen lg:w-[48%] lg:overflow-y-auto lg:!px-10 xl:!px-14">
+      <main className="relative flex min-h-screen flex-1 items-center justify-center overflow-hidden bg-[#0a0f1c] !px-5 !py-10 sm:!px-8 lg:h-screen lg:w-[48%] lg:overflow-y-auto lg:!px-10 xl:!px-14">
+        {/* Unified Background Gradients */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_2%_50%,rgba(124,58,237,0.12),transparent_40%),radial-gradient(circle_at_98%_10%,rgba(59,130,246,0.08),transparent_30%)]" />
+        
         {/* Mirrored Transition Glow */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-px bg-gradient-to-b from-transparent via-violet-300/60 to-transparent lg:block" />
-        <div className="pointer-events-none absolute left-0 inset-y-0 hidden w-48 bg-gradient-to-r from-slate-950/5 via-transparent to-transparent lg:block" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-px bg-gradient-to-b from-transparent via-violet-300/30 to-transparent lg:block" />
+        <div className="pointer-events-none absolute left-0 inset-y-0 hidden w-48 bg-gradient-to-r from-slate-950/40 via-transparent to-transparent lg:block" />
         
-        <div className="pointer-events-none absolute left-[-15%] top-[22%] h-[500px] w-96 rounded-full bg-violet-200/40 blur-[120px]" />
-        <div className="pointer-events-none absolute right-[-18%] top-[-12%] h-72 w-72 rounded-full bg-violet-100/80 blur-3xl" />
+        <div className="pointer-events-none absolute left-[-15%] top-[22%] h-[500px] w-96 rounded-full bg-violet-600/10 blur-[120px]" />
         
-        <div className="relative z-10 w-full max-w-[440px] rounded-[32px] border border-violet-100/80 bg-white/[0.92] !p-6 shadow-[0_32px_120px_-20px_rgba(49,46,129,0.18)] backdrop-blur-2xl sm:!p-8">
+        <div className="relative z-10 w-full max-w-[440px] rounded-[32px] border border-white/5 bg-white !p-6 shadow-[0_32px_120px_-20px_rgba(0,0,0,0.5)] sm:!p-8">
           {children}
         </div>
       </main>
