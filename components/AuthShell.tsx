@@ -320,19 +320,20 @@ function SignupHero() {
 function SignupAuthShell({ children }: AuthShellProps) {
   return (
     <div className="relative h-screen overflow-y-auto bg-[#020617] text-slate-900 lg:flex lg:overflow-hidden">
-      {/* Unified Top Bar - Subtle and non-obstructive */}
-      <header className="absolute left-0 right-0 top-0 z-[100] flex h-20 items-center border-b border-white/[0.03] bg-[#020617]/10 !px-6 backdrop-blur-md sm:!px-10 lg:!px-12 xl:!px-16">
+      {/* Unified Top Bar - Solid premium color */}
+      <header className="absolute left-0 right-0 top-0 z-[100] flex h-20 items-center border-b border-white/[0.05] bg-[#0B0E14] !px-6 sm:!px-10 lg:!px-12 xl:!px-16">
         <div className="text-2xl font-black tracking-tighter text-white">Schrove<span className="text-violet-500">.</span></div>
       </header>
 
       <SignupHero />
-      <main className="relative flex min-h-screen flex-1 items-center justify-center overflow-hidden bg-[#020617] !px-5 !pb-10 !pt-28 sm:!px-8 lg:h-screen lg:w-[48%] lg:overflow-y-auto lg:!px-10 lg:!pt-20 xl:!px-14">
+      <main className="relative flex min-h-screen flex-1 items-center justify-center overflow-hidden bg-[#020617] !px-5 !pb-10 !pt-20 sm:!px-8 lg:h-screen lg:w-[48%] lg:overflow-y-auto lg:!px-10 xl:!px-14">
         {/* Subtle Boundary Transition */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_0%_50%,rgba(124,58,237,0.08),transparent_40%),radial-gradient(circle_at_80%_20%,rgba(59,130,246,0.05),transparent_40%)]" />
         
         <div className="pointer-events-none absolute left-0 top-0 h-full w-px bg-gradient-to-b from-transparent via-white/5 to-transparent hidden lg:block" />
         
-        <div className="relative z-10 w-full max-w-[460px] transform-gpu">
+        {/* Added margin-top to the card container to prevent header overlap */}
+        <div className="relative z-10 !mt-20 w-full max-w-[460px] transform-gpu">
           <div className="overflow-hidden rounded-[32px] border border-white/10 bg-white shadow-[0_32px_120px_-20px_rgba(0,0,0,0.8)]">
             <div className="!p-8 sm:!p-10">
               {children}
