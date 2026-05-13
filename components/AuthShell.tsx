@@ -207,7 +207,7 @@ function SignupHero() {
 
   return (
     <motion.section 
-      className="relative flex min-h-[420px] flex-col overflow-hidden bg-[radial-gradient(circle_at_50%_42%,rgba(124,58,237,0.32),transparent_28%),radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.16),transparent_28%),linear-gradient(145deg,#030712_0%,#09111f_44%,#111141_100%)] px-6 py-8 text-white sm:px-10 lg:min-h-screen lg:w-[52%] lg:px-12 xl:px-16"
+      className="relative flex min-h-[420px] flex-col overflow-hidden bg-[#020617] !px-6 !py-8 text-white sm:!px-10 lg:min-h-screen lg:w-[52%] lg:!px-12 xl:!px-16"
       animate={shouldReduceMotion ? undefined : {
         x: [0, 0, 4, -3, 2, -1, 0, 0],
       }}
@@ -218,87 +218,82 @@ function SignupHero() {
         ease: "easeInOut"
       }}
     >
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:72px_72px] opacity-20" />
-      <div className="absolute inset-x-[14%] top-[18%] h-72 rounded-full bg-violet-500/20 blur-[110px]" />
-      <div className="absolute bottom-[-18%] left-[12%] h-72 w-72 rounded-full bg-cyan-400/10 blur-[120px]" />
-      <div className="absolute right-[-18%] top-[12%] h-80 w-80 rounded-full bg-blue-500/10 blur-[120px]" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px] opacity-20" />
+      <div className="absolute inset-x-[10%] top-[15%] h-[500px] w-[500px] rounded-full bg-violet-600/10 blur-[120px]" />
+      <div className="absolute bottom-[-10%] left-[-5%] h-80 w-80 rounded-full bg-cyan-500/10 blur-[100px]" />
+      <div className="absolute right-[-10%] top-[30%] h-96 w-96 rounded-full bg-blue-600/5 blur-[120px]" />
 
       {particles.map((className, index) => (
         <motion.span
           key={className}
-          className={`absolute rounded-full bg-white shadow-[0_0_16px_rgba(255,255,255,0.55)] ${className}`}
-          animate={shouldReduceMotion ? undefined : { opacity: [0.15, 0.65, 0.15], scale: [0.9, 1.25, 0.9] }}
-          transition={shouldReduceMotion ? undefined : { duration: 3.8 + index * 0.3, repeat: Infinity, ease: 'easeInOut', delay: index * 0.35 }}
+          className={`absolute rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,0.4)] ${className}`}
+          animate={shouldReduceMotion ? undefined : { opacity: [0.1, 0.5, 0.1], scale: [0.8, 1.1, 0.8] }}
+          transition={shouldReduceMotion ? undefined : { duration: 4 + index * 0.4, repeat: Infinity, ease: 'easeInOut', delay: index * 0.4 }}
           aria-hidden="true"
         />
       ))}
 
       <div className="relative z-20 flex items-center justify-between">
-        <div className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl">Schrove.</div>
+        <div className="text-2xl font-black tracking-tighter text-white">Schrove<span className="text-violet-500">.</span></div>
       </div>
 
-      <div className="relative z-10 flex flex-1 flex-col items-center justify-center py-12 lg:py-10">
+      <div className="relative z-10 flex flex-1 flex-col items-center justify-center !py-10">
         <motion.div
           className="mx-auto max-w-xl text-center"
-          initial={shouldReduceMotion ? false : { opacity: 0, y: 22 }}
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 15 }}
           animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <h1 className="text-4xl font-black leading-[0.96] tracking-tight text-white sm:text-5xl xl:text-6xl">
+          <h1 className="text-balance text-5xl font-black leading-[1] tracking-tight text-white sm:text-6xl xl:text-7xl">
             Modern Transport
-            <span className="block">Intelligence for</span>
-            <span className="block bg-gradient-to-r from-cyan-200 via-blue-300 to-violet-300 bg-clip-text text-transparent">Schools</span>
+            <span className="block bg-gradient-to-r from-violet-400 via-indigo-300 to-cyan-300 bg-clip-text text-transparent">Intelligence</span>
           </h1>
-          <p className="mx-auto mt-6 max-w-[280px] text-sm font-medium leading-relaxed text-slate-400 sm:max-w-md sm:text-base">
-            The next generation of fleet management. Secure, automated, and built for the most complex school operations.
+          <p className="mx-auto !mt-6 max-w-md text-base font-medium leading-relaxed text-slate-400">
+            A premium command center for school fleet operations. Effortless, automated, and hyper-secure.
           </p>
         </motion.div>
       </div>
 
       <AnimatedBus />
 
-      {/* Feature Highlights - Moved below bus */}
-      <div className="relative z-20 mb-8 flex flex-wrap justify-center gap-6">
+      <div className="relative z-20 !mb-4 flex flex-wrap justify-center gap-4">
         {[
           { label: 'Real-time GPS', icon: '📡' },
-          { label: 'AI Routes', icon: '🤖' },
-          { label: 'Secure SSN', icon: '🔒' }
+          { label: 'AI Optimization', icon: '🤖' },
+          { label: 'Cloud Security', icon: '🔒' }
         ].map((feat, i) => (
           <motion.div
             key={feat.label}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.5 + i * 0.1 }}
-            className="flex items-center gap-2 rounded-2xl border border-white/5 bg-white/5 px-4 py-2 backdrop-blur-md"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 + i * 0.1 }}
+            className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 !px-3.5 !py-2 backdrop-blur-md"
           >
             <span className="text-sm">{feat.icon}</span>
-            <span className="text-[11px] font-bold uppercase tracking-widest text-slate-300">{feat.label}</span>
+            <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-slate-300">{feat.label}</span>
           </motion.div>
         ))}
       </div>
-      
-      {/* Smooth Transition Overlay */}
-      <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-64 bg-gradient-to-l from-slate-900 via-slate-900/40 to-transparent lg:block" />
     </motion.section>
   );
 }
 
 function SignupAuthShell({ children }: AuthShellProps) {
   return (
-    <div className="h-screen overflow-y-auto bg-slate-950 text-slate-900 lg:flex lg:overflow-hidden">
+    <div className="h-screen overflow-y-auto bg-[#020617] text-slate-900 lg:flex lg:overflow-hidden">
       <SignupHero />
-      <main className="relative flex min-h-screen flex-1 items-center justify-center overflow-hidden bg-[#0a0f1c] px-5 py-10 sm:px-8 lg:h-screen lg:w-[48%] lg:overflow-y-auto lg:px-10 xl:px-14">
-        {/* Unified Background Gradients */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_2%_50%,rgba(124,58,237,0.12),transparent_40%),radial-gradient(circle_at_98%_10%,rgba(59,130,246,0.08),transparent_30%)]" />
+      <main className="relative flex min-h-screen flex-1 items-center justify-center overflow-hidden bg-[#020617] !px-5 !py-10 sm:!px-8 lg:h-screen lg:w-[48%] lg:overflow-y-auto lg:!px-10 xl:!px-14">
+        {/* Subtle Boundary Transition */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_0%_50%,rgba(124,58,237,0.08),transparent_40%),radial-gradient(circle_at_80%_20%,rgba(59,130,246,0.05),transparent_40%)]" />
         
-        {/* Mirrored Transition Glow */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-px bg-gradient-to-b from-transparent via-violet-300/30 to-transparent lg:block" />
-        <div className="pointer-events-none absolute left-0 inset-y-0 hidden w-48 bg-gradient-to-r from-slate-950/40 via-transparent to-transparent lg:block" />
+        <div className="pointer-events-none absolute left-0 top-0 h-full w-px bg-gradient-to-b from-transparent via-white/5 to-transparent hidden lg:block" />
         
-        <div className="pointer-events-none absolute left-[-15%] top-[22%] h-[500px] w-96 rounded-full bg-violet-600/10 blur-[120px]" />
-        
-        <div className="relative z-10 w-full max-w-[440px] rounded-[32px] border border-white/5 bg-white p-6 shadow-[0_32px_120px_-20px_rgba(0,0,0,0.5)] sm:p-8">
-          {children}
+        <div className="relative z-10 w-full max-w-[460px] transform-gpu">
+          <div className="overflow-hidden rounded-[32px] border border-white/10 bg-white shadow-[0_32px_120px_-20px_rgba(0,0,0,0.8)]">
+            <div className="!p-8 sm:!p-10">
+              {children}
+            </div>
+          </div>
         </div>
       </main>
     </div>

@@ -1,10 +1,11 @@
 'use client';
+import { Settings, Bell, Shield, Database, Palette, Globe } from 'lucide-react';
 import Topbar from '@/components/Topbar';
 
 const settingSections = [
   {
     title: 'General',
-    icon: 'globe',
+    icon: Globe,
     items: [
       { label: 'School Name', type: 'text', val: 'Central International School' },
       { label: 'Academic Year', type: 'text', val: '2025–2026' },
@@ -13,7 +14,7 @@ const settingSections = [
   },
   {
     title: 'Notifications',
-    icon: 'notifications',
+    icon: Bell,
     items: [
       { label: 'Idle Time Alert Threshold', type: 'number', val: '3 minutes' },
       { label: 'Fuel Low Warning', type: 'number', val: '25%' },
@@ -22,7 +23,7 @@ const settingSections = [
   },
   {
     title: 'Safety & Compliance',
-    icon: 'shield',
+    icon: Shield,
     items: [
       { label: 'Speed Limit Default', type: 'number', val: '50 km/h' },
       { label: 'Attendance Minimum', type: 'number', val: '75%' },
@@ -33,32 +34,31 @@ const settingSections = [
 
 export default function SettingsPage() {
   return (
-    <div className="flex-1 flex flex-col h-full overflow-y-auto bg-surface-container-low">
+    <div className="main-content">
       <Topbar title="Settings" />
-      <div className="p-md space-y-md max-w-2xl mx-auto w-full">
-        {settingSections.map(section => (
-          <div key={section.title} className="rounded-xl border border-outline-variant bg-surface-container-lowest overflow-hidden shadow-sm">
-            <div className="px-5 py-4 border-b border-outline-variant flex items-center gap-3 bg-surface-bright">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-primary/10 text-primary">
-                <span className="material-symbols-outlined text-[18px]">{section.icon}</span>
-              </div>
-              <h3 className="font-headline-sm text-sm text-on-surface">{section.title}</h3>
-            </div>
-            <div className="divide-y divide-outline-variant/30">
-              {section.items.map(item => (
-                <div key={item.label} className="px-5 py-4 flex items-center justify-between hover:bg-surface-container-low transition-colors">
-                  <span className="font-label-sm text-on-surface-variant">{item.label}</span>
-                  <span className="font-body-base text-sm font-semibold text-on-surface">{item.val}</span>
+      <div className="p-6 space-y-5 max-w-2xl">
+        {settingSections.map(section => {
+          const Icon = section.icon;
+          return (
+            <div key={section.title} className="glass-card overflow-hidden">
+              <div className="px-5 py-3.5 border-b flex items-center gap-3" style={{ borderColor: 'rgba(226,232,240,0.6)' }}>
+                <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'rgba(59,130,246,0.1)' }}>
+                  <Icon size={13} style={{ color: '#3B82F6' }} />
                 </div>
-              ))}
+                <h3 className="font-bold text-sm text-violet-700">{section.title}</h3>
+              </div>
+              <div className="divide-y" style={{ borderColor: 'rgba(226,232,240,0.4)' }}>
+                {section.items.map(item => (
+                  <div key={item.label} className="px-5 py-3.5 flex items-center justify-between">
+                    <span className="text-xs font-medium text-violet-600">{item.label}</span>
+                    <span className="font-mono text-xs text-violet-400" style={{ fontFamily: 'JetBrains Mono, monospace' }}>{item.val}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
-        <div className="flex justify-end pt-sm">
-          <button className="rounded-lg bg-primary px-lg py-sm font-label-sm font-bold text-on-primary shadow-sm hover:bg-on-primary-fixed-variant transition-all active:scale-95">
-            Save Configuration
-          </button>
-        </div>
+          );
+        })}
+        <button className="btn-primary">Save Configuration</button>
       </div>
     </div>
   );

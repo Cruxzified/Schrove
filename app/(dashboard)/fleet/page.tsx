@@ -1,158 +1,175 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { MapPin, Bus, AlertTriangle, MessageSquare, Phone } from 'lucide-react';
 import Topbar from '@/components/Topbar';
 import SlidePanel from '@/components/SlidePanel';
 import { buses } from '@/lib/data';
-import { MessageSquare, Phone } from 'lucide-react';
 
-export default function FleetPage() {
-  const [selected, setSelected] = useState<any>(null);
+type Bus = typeof buses[number];
+
+function MapCanvas({ buses, selectedBus, onSelectBus }: {
+  buses: Bus[]; selectedBus: Bus | null; onSelectBus: (b: Bus) => void;
+}) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const W = canvas.width = canvas.offsetWidth;
+    const H = canvas.height = canvas.offsetHeight;
+    const latMin = 27.705, latMax = 27.730, lngMin = 85.300, lngMax = 85.340;
+    const toX = (lng: number) => ((lng - lngMin) / (lngMax - lngMin)) * W;
+    const toY = (lat: number) => H - ((lat - latMin) / (latMax - latMin)) * H;
+
+    let frame: number, tick = 0;
+
+    const draw = () => {
+      tick++;
+      ctx.clearRect(0, 0, W, H);
+
+      // Clean Light Background
+      ctx.fillStyle = '#F8FAFC';
+      ctx.fillRect(0, 0, W, H);
+
+      // Grid
+      ctx.strokeStyle = '#F1F5F9'; ctx.lineWidth = 1;
+      for (let x = 0; x < W; x += 60) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+      for (let y = 0; y < H; y += 60) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+      // Roads
+      const roads: [number,number][][] = [
+        [[85.300,27.715],[85.340,27.715]],
+        [[85.315,27.705],[85.315,27.730]],
+        [[85.300,27.722],[85.340,27.718]],
+        [[85.305,27.705],[85.325,27.730]],
+        [[85.300,27.708],[85.335,27.725]],
+      ];
+      roads.forEach(road => {
+        ctx.beginPath();
+        road.forEach(([lng,lat],i) => { const x=toX(lng),y=toY(lat); i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); });
+        ctx.strokeStyle='#E2E8F0'; ctx.lineWidth=10; ctx.lineCap="round"; ctx.lineJoin="round"; ctx.stroke();
+        ctx.strokeStyle='#FFFFFF'; ctx.lineWidth=6; ctx.stroke();
+      });
+
+      // School
+      const sx = toX(85.318), sy = toY(27.712);
+      ctx.fillStyle='#F0FDF4'; ctx.beginPath(); ctx.arc(sx,sy,24,0,Math.PI*2); ctx.fill();
+      ctx.strokeStyle='#22C55E'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(sx,sy,24,0,Math.PI*2); ctx.stroke();
+      ctx.fillStyle='#16A34A'; ctx.font='bold 9px Inter'; ctx.textAlign='center'; ctx.fillText('SCHOOL',sx,sy+3);
+
+      // Buses
+      buses.forEach(bus => {
+        const jx = bus.status==='moving' ? Math.sin(tick*0.05+bus.id.charCodeAt(4))*1.5 : 0;
+        const jy = bus.status==='moving' ? Math.cos(tick*0.04+bus.id.charCodeAt(4))*1 : 0;
+        const x = toX(bus.lng)+jx, y = toY(bus.lat)+jy;
+        const col = bus.status==='moving' ? '#2563EB' : bus.status==='delayed' ? '#D97706' : '#6B7280';
+        const sel = selectedBus?.id===bus.id;
+
+        // Pulse
+        if (bus.status==='moving'||sel) {
+          const pr = 16+Math.sin(tick*0.1)*3;
+          ctx.fillStyle=bus.status==='moving' ? 'rgba(37,99,235,0.15)' : 'rgba(217,119,6,0.15)';
+          ctx.beginPath(); ctx.arc(x,y,pr,0,Math.PI*2); ctx.fill();
+        }
+
+        // Bus marker
+        ctx.fillStyle = sel ? col : '#FFFFFF';
+        ctx.beginPath(); ctx.arc(x,y,12,0,Math.PI*2); ctx.fill();
+        ctx.lineWidth=2; ctx.strokeStyle=col; ctx.stroke();
+        
+        ctx.fillStyle = sel ? '#FFFFFF' : col;
+        ctx.font=`bold 9px Inter`; ctx.textAlign='center';
+        ctx.fillText(bus.id.replace('BUS-',''),x,y+3);
+
+        // Alert
+        if (bus.idleTime>3 || bus.status === 'delayed') {
+          ctx.fillStyle='#EF4444'; ctx.beginPath(); ctx.arc(x+10,y-10,6,0,Math.PI*2); ctx.fill();
+          ctx.fillStyle='white'; ctx.font='bold 9px Inter'; ctx.fillText('!',x+10,y-7);
+        }
+      });
+      frame = requestAnimationFrame(draw);
+    };
+    draw();
+    return () => cancelAnimationFrame(frame);
+  }, [buses, selectedBus]);
+
+  const handleClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current; if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX-rect.left)*(canvas.width/rect.width);
+    const my = (e.clientY-rect.top)*(canvas.height/rect.height);
+    const latMin=27.705,latMax=27.730,lngMin=85.300,lngMax=85.340;
+    const toX=(lng:number)=>((lng-lngMin)/(lngMax-lngMin))*canvas.width;
+    const toY=(lat:number)=>canvas.height-((lat-latMin)/(latMax-latMin))*canvas.height;
+    for (const b of buses) {
+      if (Math.hypot(mx-toX(b.lng),my-toY(b.lat))<20) { onSelectBus(b); return; }
+    }
+  };
+
+  return <canvas ref={canvasRef} onClick={handleClick} className="w-full h-full cursor-pointer" style={{ display:'block' }} />;
+}
+
+export default function FleetCommand() {
+  const [selected, setSelected] = useState<Bus | null>(null);
 
   return (
-    <div className="flex-1 flex flex-col h-screen overflow-hidden">
-      <Topbar title="Live Fleet Overview" />
-      
-      <main className="flex-1 flex overflow-hidden relative bg-surface-container">
-        {/* Fleet Side Panel */}
-        <aside className="w-[320px] bg-surface-container-lowest border-r border-outline-variant/50 flex flex-col z-10 shadow-sm h-full">
-          <div className="p-sm border-b border-outline-variant/30 bg-surface-bright">
-            <div className="flex items-center justify-between mb-sm">
-              <h3 className="font-headline-sm text-on-surface">Active Fleet</h3>
-              <span className="bg-primary-container text-on-primary-container px-xs py-[2px] rounded-full font-label-caps text-[10px]">
-                {buses.length} ONLINE
-              </span>
-            </div>
-            <div className="flex gap-xs">
-              <button className="flex-1 py-xs bg-surface-container-low rounded-lg text-on-surface font-label-sm border border-outline-variant/50">All</button>
-              <button className="flex-1 py-xs text-on-surface-variant font-label-sm hover:bg-surface-container-lowest rounded-lg transition-colors border border-transparent">Delayed</button>
-              <button className="flex-1 py-xs text-on-surface-variant font-label-sm hover:bg-surface-container-lowest rounded-lg transition-colors border border-transparent">Idle</button>
-            </div>
+    <>
+      <Topbar title="Live Fleet Map" action={{ label: 'Dispatch Bus' }} />
+      <div className="flex" style={{ height: 'calc(100vh - 64px)' }}>
+        
+        {/* Left Sidebar List */}
+        <div className="w-[320px] flex-shrink-0 bg-white border-r border-violet-200 flex flex-col">
+          <div className="p-4 border-b border-violet-100 flex items-center justify-between">
+            <h3 className="font-semibold text-violet-800">Active Fleet</h3>
+            <span className="text-xs font-bold bg-blue-100 text-blue-700 px-2 py-1 rounded">24 Vehicles</span>
           </div>
           
-          <div className="flex-1 overflow-y-auto p-xs flex flex-col gap-xs custom-scrollbar">
-            {buses.map((bus) => (
-              <div 
-                key={bus.id}
-                onClick={() => setSelected(bus)}
-                className={`bg-surface-container-lowest border border-outline-variant/50 rounded-lg p-sm hover:bg-surface-bright cursor-pointer transition-all flex flex-col gap-xs shadow-sm ${
-                  selected?.id === bus.id ? 'border-primary ring-1 ring-primary/20' : ''
-                }`}
-              >
-                <div className="flex justify-between items-start">
-                  <div className="flex items-center gap-xs">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                      bus.status === 'delayed' ? 'bg-error/10 text-error' : 'bg-primary/10 text-primary'
-                    }`}>
-                      <span className="material-symbols-outlined text-[18px]">directions_bus</span>
+          <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-violet-50">
+            {buses.map(b => {
+              const isSel = selected?.id===b.id;
+              return (
+                <div key={b.id} 
+                  onClick={() => setSelected(b===selected?null:b)}
+                  className={`p-3 rounded-xl border cursor-pointer transition-all ${isSel ? 'border-blue-500 bg-blue-50 shadow-sm' : 'border-violet-200 bg-white hover:border-violet-300'}`}>
+                  
+                  <div className="flex justify-between items-center mb-2">
+                    <div className="flex items-center gap-2">
+                      <div className={`w-2 h-2 rounded-full ${b.status==='moving'?'bg-green-500':b.status==='delayed'?'bg-amber-500':'bg-gray-400'}`} />
+                      <span className="font-bold text-violet-800 text-sm">{b.id}</span>
                     </div>
-                    <div>
-                      <h4 className="font-label-sm font-semibold text-on-surface">{bus.id} - {bus.route}</h4>
-                      <p className="text-[11px] font-body-base text-on-surface-variant">Driver: {bus.driver}</p>
+                    <span className="text-xs font-medium text-violet-500">{b.route}</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-6 h-6 rounded bg-violet-100 flex items-center justify-center text-[10px] font-bold text-violet-600">
+                      {b.driver.charAt(0)}
                     </div>
+                    <span className="text-xs font-medium text-violet-700">{b.driver}</span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <div className={`w-2 h-2 rounded-full shadow-sm ${
-                      bus.status === 'delayed' ? 'bg-[#f59e0b]' : 'bg-surface-tint'
-                    }`}></div>
-                    <span className={`font-label-caps text-[10px] ${
-                      bus.status === 'delayed' ? 'text-[#f59e0b]' : 'text-surface-tint'
-                    }`}>
-                      {bus.status === 'delayed' ? `+${bus.delay}` : 'ON TIME'}
-                    </span>
+
+                  <div className="text-xs text-violet-500 flex justify-between items-center">
+                    <span>{b.speed} km/h</span>
+                    <span>ETA {b.eta}</span>
                   </div>
                 </div>
-                <div className="flex items-center justify-between pt-xs border-t border-outline-variant/20 mt-xs">
-                  <div className="flex flex-col">
-                    <span className="font-label-caps text-[10px] text-on-surface-variant">SPEED</span>
-                    <span className="font-body-base text-on-surface font-medium">{bus.speed} mph</span>
-                  </div>
-                  <div className="flex flex-col text-right">
-                    <span className="font-label-caps text-[10px] text-on-surface-variant">NEXT STOP ETA</span>
-                    <span className="font-body-base text-on-surface font-medium">{bus.eta}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
-        </aside>
-
-        {/* Map Canvas Area */}
-        <div 
-          className="flex-1 relative bg-[#e2e8f0] overflow-hidden"
-          style={{ 
-            backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuCGoevRwDdzTAjH6DMOf5WEI5SWOFHRNz58BQR0kYTtMl6skPHyeiE3sWydydQGUNtg5bQLrdMnNJo49qm8B_TKkcde3oVnJdjt0aX5HzRra-CU3rXSox1HUUCrQeUQbJKHBCT5Famz_PLtBtS0emRfkwiMiLS0LxZAft3J6aWhnsyvrHDrsyAnRzHsEoxhRWm6Hm3ha758dcg8WWkW7EX2-GdIxDI9hjUB2DOTcr7dIcP3Q77iJCJbSKwSECIixcFUwmbVD3SzJg')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
-        >
-          {/* Overlay to simulate UI map style */}
-          <div className="absolute inset-0 bg-surface/40 backdrop-blur-[1px] mix-blend-overlay pointer-events-none"></div>
-
-          {/* Floating Map Controls */}
-          <div className="absolute bottom-lg right-lg flex flex-col gap-sm z-30">
-            <div className="bg-surface-container-lowest/90 backdrop-blur-md rounded-lg shadow-sm border border-outline-variant/30 flex flex-col overflow-hidden">
-              <button className="w-10 h-10 flex items-center justify-center text-on-surface hover:bg-surface-container-low transition-colors border-b border-outline-variant/30">
-                <span className="material-symbols-outlined text-[20px]">add</span>
-              </button>
-              <button className="w-10 h-10 flex items-center justify-center text-on-surface hover:bg-surface-container-low transition-colors">
-                <span className="material-symbols-outlined text-[20px]">remove</span>
-              </button>
-            </div>
-            <button className="w-10 h-10 bg-surface-container-lowest/90 backdrop-blur-md rounded-lg shadow-sm border border-outline-variant/30 flex items-center justify-center text-on-surface hover:bg-surface-container-low transition-colors">
-              <span className="material-symbols-outlined text-[20px]">my_location</span>
-            </button>
-          </div>
-
-          {/* Global Stats Overlay */}
-          <div className="absolute top-md left-md right-md flex justify-center pointer-events-none z-30">
-            <div className="bg-surface-container-lowest/80 backdrop-blur-[20px] rounded-full px-lg py-sm shadow-md border border-white/50 flex items-center gap-xl pointer-events-auto">
-              <div className="flex flex-col items-center">
-                <span className="font-label-caps text-[10px] text-on-surface-variant mb-1 uppercase">System Status</span>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-[#10b981]"></div>
-                  <span className="font-headline-sm text-[14px] text-on-surface">Optimal</span>
-                </div>
-              </div>
-              <div className="w-px h-8 bg-outline-variant/40"></div>
-              <div className="flex flex-col items-center">
-                <span className="font-label-caps text-[10px] text-on-surface-variant mb-1 uppercase">On-Time Performance</span>
-                <span className="font-headline-sm text-[14px] text-on-surface">94.2%</span>
-              </div>
-              <div className="w-px h-8 bg-outline-variant/40"></div>
-              <div className="flex flex-col items-center">
-                <span className="font-label-caps text-[10px] text-on-surface-variant mb-1 uppercase">Active Incidents</span>
-                <span className="font-headline-sm text-[14px] text-[#f59e0b]">2 Warnings</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Vehicle Markers (Mock) */}
-          {buses.slice(0, 3).map((bus, i) => (
-            <div 
-              key={bus.id}
-              onClick={() => setSelected(bus)}
-              className="absolute transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center group cursor-pointer z-20"
-              style={{ 
-                top: i === 0 ? '285px' : i === 1 ? '465px' : '200px',
-                left: i === 0 ? '500px' : i === 1 ? '600px' : '800px'
-              }}
-            >
-              <div className={`px-xs py-[2px] rounded font-label-caps text-[10px] mb-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md text-white ${
-                bus.status === 'delayed' ? 'bg-[#f59e0b]' : 'bg-surface-tint'
-              }`}>
-                {bus.id} {bus.status === 'delayed' ? `(+${bus.delay})` : ''}
-              </div>
-              <div className={`w-4 h-4 rounded-full border-2 border-surface shadow-md relative ${
-                bus.status === 'delayed' ? 'bg-[#f59e0b]' : 'bg-surface-tint'
-              }`}>
-                {bus.status !== 'delayed' && (
-                  <div className="absolute inset-0 rounded-full border border-surface-tint animate-ping opacity-50"></div>
-                )}
-              </div>
-            </div>
-          ))}
         </div>
-      </main>
+
+        {/* Map Area */}
+        <div className="flex-1 relative">
+          <MapCanvas buses={buses} selectedBus={selected} onSelectBus={setSelected} />
+          
+          <div className="absolute top-4 left-4 bg-white px-4 py-2 rounded-lg border border-violet-200 shadow-sm flex items-center gap-2">
+            <div className="live-dot" />
+            <span className="text-xs font-bold text-violet-700 tracking-wider">LIVE TELEMETRY</span>
+          </div>
+        </div>
+      </div>
 
       <SlidePanel
         open={!!selected}
@@ -163,64 +180,48 @@ export default function FleetPage() {
         {selected && (
           <div className="space-y-6">
             <div className="flex gap-2">
-              <button className="flex-1 rounded-xl border border-outline-variant bg-white py-2.5 text-sm font-bold text-on-surface-variant hover:bg-surface-container-low transition-all flex items-center justify-center gap-2">
-                <MessageSquare size={16} /> Message
-              </button>
-              <button className="flex-1 rounded-xl bg-primary py-2.5 text-sm font-bold text-on-primary hover:bg-on-primary-fixed-variant transition-all flex items-center justify-center gap-2">
-                <Phone size={16} /> Call Driver
-              </button>
+              <button className="flex-1 btn-outline justify-center"><MessageSquare size={14} /> Message</button>
+              <button className="flex-1 btn-dark justify-center"><Phone size={14} /> Call Driver</button>
             </div>
 
-            <div className="rounded-xl border border-outline-variant bg-surface-container-lowest overflow-hidden shadow-sm">
-              <div className="bg-surface-container-low px-4 py-3 border-b border-outline-variant">
-                <h4 className="text-sm font-bold text-on-surface">Trip Details</h4>
+            <div className="section-card">
+              <div className="section-card-header py-3">
+                <span className="section-card-title text-sm">Trip Details</span>
               </div>
               <div className="p-4 space-y-3">
-                {[
-                  { label: 'Route', value: selected.route },
-                  { label: 'Status', value: selected.status, isBadge: true },
-                  { label: 'Students', value: `${selected.students}/${selected.capacity}` },
-                  { label: 'Speed', value: `${selected.speed} mph` },
-                  { label: 'Fuel', value: `${selected.fuel}%` }
-                ].map((item, i) => (
-                  <div key={i} className="flex justify-between items-center text-sm">
-                    <span className="text-on-surface-variant font-medium">{item.label}</span>
-                    {item.isBadge ? (
-                      <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider ${
-                        selected.status === 'moving' ? 'bg-[#dcfce7] text-[#166534]' : 
-                        selected.status === 'delayed' ? 'bg-error-container text-on-error-container' : 'bg-surface-container-highest text-on-surface-variant'
-                      }`}>
-                        {selected.status}
-                      </span>
-                    ) : (
-                      <span className="text-on-surface font-semibold">{item.value}</span>
-                    )}
-                  </div>
-                ))}
+                <div className="metric-row"><span className="metric-key">Route</span><span className="metric-val">{selected.route}</span></div>
+                <div className="metric-row"><span className="metric-key">Status</span>
+                  <span className={`status-badge ${selected.status==='moving'?'status-live':selected.status==='delayed'?'status-delayed':'status-standby'}`}>
+                    {selected.status}
+                  </span>
+                </div>
+                <div className="metric-row"><span className="metric-key">Students</span><span className="metric-val">{selected.students}/{selected.capacity}</span></div>
+                <div className="metric-row"><span className="metric-key">Speed</span><span className="metric-val">{selected.speed} km/h</span></div>
+                <div className="metric-row"><span className="metric-key">Fuel</span><span className="metric-val">{selected.fuel}%</span></div>
               </div>
             </div>
 
             <div>
-              <div className="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest mb-3 px-1">Route Progress</div>
-              <div className="rounded-xl border border-outline-variant bg-surface-container-low p-4">
-                <div className="flex justify-between text-xs font-bold mb-2">
-                  <span className="text-on-surface-variant">Completion</span>
-                  <span className="text-primary">{selected.progress}%</span>
+              <div className="text-xs font-bold text-violet-400 uppercase tracking-wider mb-3 pl-1">Route Progress</div>
+              <div className="bg-violet-50 border border-violet-200 rounded-xl p-4">
+                <div className="flex justify-between text-xs font-medium mb-1.5">
+                  <span className="text-violet-500">Completion</span>
+                  <span className="text-violet-900">{selected.progress}%</span>
                 </div>
-                <div className="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden mb-6">
-                  <div className="h-full bg-primary transition-all duration-700" style={{ width: `${selected.progress}%` }}></div>
+                <div className="prog-track mb-5">
+                  <div className={`prog-fill ${selected.status==='moving'?'prog-fill-green':selected.status==='delayed'?'prog-fill-amber':''}`} style={{ width: `${selected.progress}%` }}></div>
                 </div>
 
                 <div className="space-y-4">
-                  {selected.stops?.map((stop: any, i: number) => (
+                  {selected.stops.map((stop, i) => (
                     <div key={i} className="flex gap-3">
                       <div className="flex flex-col items-center">
-                        <div className={`w-3 h-3 rounded-full border-2 ${stop.done ? 'bg-primary border-primary' : 'bg-white border-outline'}`} />
-                        {i < selected.stops.length - 1 && <div className={`w-px h-6 my-1 ${stop.done ? 'bg-primary' : 'bg-outline-variant'}`} />}
+                        <div className={`w-3 h-3 rounded-full border-2 ${stop.done ? 'bg-green-500 border-green-500' : 'bg-white border-violet-300'}`} />
+                        {i < selected.stops.length - 1 && <div className={`w-px h-6 my-1 ${stop.done ? 'bg-green-500' : 'bg-violet-200'}`} />}
                       </div>
                       <div className="-mt-1">
-                        <div className={`text-sm font-bold ${stop.done ? 'text-on-surface' : 'text-on-surface-variant'}`}>{stop.name}</div>
-                        <div className="text-[11px] text-outline mt-0.5">{stop.time}</div>
+                        <div className={`text-sm font-medium ${stop.done ? 'text-violet-400' : 'text-violet-800'}`}>{stop.name}</div>
+                        <div className="text-xs text-violet-400 mt-0.5">{stop.time}</div>
                       </div>
                     </div>
                   ))}
@@ -230,6 +231,6 @@ export default function FleetPage() {
           </div>
         )}
       </SlidePanel>
-    </div>
+    </>
   );
 }
