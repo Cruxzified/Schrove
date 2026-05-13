@@ -207,7 +207,7 @@ function SignupHero() {
 
   return (
     <motion.section 
-      className="relative flex min-h-[420px] flex-col overflow-hidden bg-[radial-gradient(circle_at_50%_42%,rgba(124,58,237,0.32),transparent_28%),radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.16),transparent_28%),linear-gradient(145deg,#030712_0%,#09111f_44%,#111141_100%)] !px-6 !py-8 text-white sm:!px-10 lg:min-h-screen lg:w-[52%] lg:!px-12 xl:!px-16"
+      className="relative flex min-h-[420px] flex-col overflow-hidden bg-[radial-gradient(circle_at_50%_42%,rgba(124,58,237,0.32),transparent_28%),radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.16),transparent_28%),linear-gradient(145deg,#030712_0%,#09111f_44%,#111141_100%)] px-6 py-8 text-white sm:px-10 lg:min-h-screen lg:w-[52%] lg:px-12 xl:px-16"
       animate={shouldReduceMotion ? undefined : {
         x: [0, 0, 4, -3, 2, -1, 0, 0],
       }}
@@ -237,19 +237,19 @@ function SignupHero() {
         <div className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl">Schrove.</div>
       </div>
 
-      <div className="relative z-10 flex flex-1 flex-col items-center justify-center !py-12 lg:!py-10">
+      <div className="relative z-10 flex flex-1 flex-col items-center justify-center py-12 lg:py-10">
         <motion.div
           className="mx-auto max-w-xl text-center"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 22 }}
           animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
         >
-          <h1 className="text-balance text-4xl font-black leading-[0.96] tracking-tight text-white sm:text-5xl xl:text-6xl">
+          <h1 className="text-4xl font-black leading-[0.96] tracking-tight text-white sm:text-5xl xl:text-6xl">
             Modern Transport
             <span className="block">Intelligence for</span>
             <span className="block bg-gradient-to-r from-cyan-200 via-blue-300 to-violet-300 bg-clip-text text-transparent">Schools</span>
           </h1>
-          <p className="mx-auto !mt-6 max-w-[280px] text-sm font-medium leading-relaxed text-slate-400 sm:max-w-md sm:text-base">
+          <p className="mx-auto mt-6 max-w-[280px] text-sm font-medium leading-relaxed text-slate-400 sm:max-w-md sm:text-base">
             The next generation of fleet management. Secure, automated, and built for the most complex school operations.
           </p>
         </motion.div>
@@ -258,7 +258,7 @@ function SignupHero() {
       <AnimatedBus />
 
       {/* Feature Highlights - Moved below bus */}
-      <div className="relative z-20 !mb-8 flex flex-wrap justify-center gap-6">
+      <div className="relative z-20 mb-8 flex flex-wrap justify-center gap-6">
         {[
           { label: 'Real-time GPS', icon: '📡' },
           { label: 'AI Routes', icon: '🤖' },
@@ -269,7 +269,7 @@ function SignupHero() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.5 + i * 0.1 }}
-            className="flex items-center gap-2 rounded-2xl border border-white/5 bg-white/5 !px-4 !py-2 backdrop-blur-md"
+            className="flex items-center gap-2 rounded-2xl border border-white/5 bg-white/5 px-4 py-2 backdrop-blur-md"
           >
             <span className="text-sm">{feat.icon}</span>
             <span className="text-[11px] font-bold uppercase tracking-widest text-slate-300">{feat.label}</span>
@@ -287,7 +287,7 @@ function SignupAuthShell({ children }: AuthShellProps) {
   return (
     <div className="h-screen overflow-y-auto bg-slate-950 text-slate-900 lg:flex lg:overflow-hidden">
       <SignupHero />
-      <main className="relative flex min-h-screen flex-1 items-center justify-center overflow-hidden bg-[#0a0f1c] !px-5 !py-10 sm:!px-8 lg:h-screen lg:w-[48%] lg:overflow-y-auto lg:!px-10 xl:!px-14">
+      <main className="relative flex min-h-screen flex-1 items-center justify-center overflow-hidden bg-[#0a0f1c] px-5 py-10 sm:px-8 lg:h-screen lg:w-[48%] lg:overflow-y-auto lg:px-10 xl:px-14">
         {/* Unified Background Gradients */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_2%_50%,rgba(124,58,237,0.12),transparent_40%),radial-gradient(circle_at_98%_10%,rgba(59,130,246,0.08),transparent_30%)]" />
         
@@ -297,7 +297,7 @@ function SignupAuthShell({ children }: AuthShellProps) {
         
         <div className="pointer-events-none absolute left-[-15%] top-[22%] h-[500px] w-96 rounded-full bg-violet-600/10 blur-[120px]" />
         
-        <div className="relative z-10 w-full max-w-[440px] rounded-[32px] border border-white/5 bg-white !p-6 shadow-[0_32px_120px_-20px_rgba(0,0,0,0.5)] sm:!p-8">
+        <div className="relative z-10 w-full max-w-[440px] rounded-[32px] border border-white/5 bg-white p-6 shadow-[0_32px_120px_-20px_rgba(0,0,0,0.5)] sm:p-8">
           {children}
         </div>
       </main>
