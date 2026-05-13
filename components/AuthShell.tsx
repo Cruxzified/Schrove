@@ -242,7 +242,7 @@ function SignupHero() {
 
   return (
     <motion.section 
-      className="relative flex min-h-[420px] flex-col overflow-hidden bg-[#020617] !px-6 !py-8 text-white sm:!px-10 lg:min-h-screen lg:w-[52%] lg:!px-12 xl:!px-16"
+      className="relative flex min-h-[420px] flex-col overflow-hidden bg-[#020617] !px-6 !pb-8 !pt-28 text-white sm:!px-10 lg:min-h-screen lg:w-[52%] lg:!px-12 lg:!pt-32 xl:!px-16"
       animate={shouldReduceMotion ? undefined : {
         x: [0, 0, 4, -4, 2, -1, 0, 0], // The "Bumpy Screen" Shake
       }}
@@ -275,7 +275,7 @@ function SignupHero() {
         />
       ))}
 
-      <div className="relative z-10 flex flex-1 flex-col items-center justify-center !py-10">
+      <div className="relative z-10 flex flex-1 flex-col items-center justify-center">
         <motion.div
           className="mx-auto max-w-xl text-center"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 15 }}
@@ -320,13 +320,13 @@ function SignupHero() {
 function SignupAuthShell({ children }: AuthShellProps) {
   return (
     <div className="relative h-screen overflow-y-auto bg-[#020617] text-slate-900 lg:flex lg:overflow-hidden">
-      {/* Unified Top Bar */}
-      <header className="absolute left-0 right-0 top-0 z-[100] flex h-20 items-center border-b border-white/5 bg-[#020617]/40 !px-6 backdrop-blur-xl sm:!px-10 lg:!px-12 xl:!px-16">
+      {/* Unified Top Bar - Subtle and non-obstructive */}
+      <header className="absolute left-0 right-0 top-0 z-[100] flex h-20 items-center border-b border-white/[0.03] bg-[#020617]/10 !px-6 backdrop-blur-md sm:!px-10 lg:!px-12 xl:!px-16">
         <div className="text-2xl font-black tracking-tighter text-white">Schrove<span className="text-violet-500">.</span></div>
       </header>
 
       <SignupHero />
-      <main className="relative flex min-h-screen flex-1 items-center justify-center overflow-hidden bg-[#020617] !px-5 !py-10 sm:!px-8 lg:h-screen lg:w-[48%] lg:overflow-y-auto lg:!px-10 xl:!px-14">
+      <main className="relative flex min-h-screen flex-1 items-center justify-center overflow-hidden bg-[#020617] !px-5 !pb-10 !pt-28 sm:!px-8 lg:h-screen lg:w-[48%] lg:overflow-y-auto lg:!px-10 lg:!pt-20 xl:!px-14">
         {/* Subtle Boundary Transition */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_0%_50%,rgba(124,58,237,0.08),transparent_40%),radial-gradient(circle_at_80%_20%,rgba(59,130,246,0.05),transparent_40%)]" />
         
