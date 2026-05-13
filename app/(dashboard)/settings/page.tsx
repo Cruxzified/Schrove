@@ -35,7 +35,7 @@ const settingSections = [
 export default function SettingsPage() {
   return (
     <div className="main-content">
-      <Topbar title="Settings" subtitle="Configure Wizor dashboard preferences and operational thresholds" />
+      <Topbar title="Settings" />
       <div className="p-6 space-y-5 max-w-2xl">
         {settingSections.map(section => {
           const Icon = section.icon;
@@ -45,13 +45,13 @@ export default function SettingsPage() {
                 <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'rgba(59,130,246,0.1)' }}>
                   <Icon size={13} style={{ color: '#3B82F6' }} />
                 </div>
-                <h3 className="font-bold text-sm text-slate-700">{section.title}</h3>
+                <h3 className="font-bold text-sm text-violet-700">{section.title}</h3>
               </div>
               <div className="divide-y" style={{ borderColor: 'rgba(226,232,240,0.4)' }}>
                 {section.items.map(item => (
                   <div key={item.label} className="px-5 py-3.5 flex items-center justify-between">
-                    <span className="text-xs font-medium text-slate-600">{item.label}</span>
-                    <span className="font-mono text-xs text-slate-400" style={{ fontFamily: 'JetBrains Mono, monospace' }}>{item.val}</span>
+                    <span className="text-xs font-medium text-violet-600">{item.label}</span>
+                    <span className="font-mono text-xs text-violet-400" style={{ fontFamily: 'JetBrains Mono, monospace' }}>{item.val}</span>
                   </div>
                 ))}
               </div>

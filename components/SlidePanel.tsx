@@ -35,8 +35,8 @@ export default function SlidePanel({ open, onClose, title, subtitle, children, a
             <div className="flex items-center gap-4">
               <div className="w-1.5 h-12 rounded-full flex-shrink-0" style={{ background: `linear-gradient(180deg,${accentColor},${accentColor}44)` }} />
               <div>
-                <h2 className="font-black text-slate-900" style={{ fontSize: 20, letterSpacing: '-0.02em', lineHeight: 1.1 }}>{title}</h2>
-                {subtitle && <p className="text-sm text-slate-400 mt-0.5">{subtitle}</p>}
+                <h2 className="font-black text-violet-900" style={{ fontSize: 20, letterSpacing: '-0.02em', lineHeight: 1.1 }}>{title}</h2>
+                {subtitle && <p className="text-sm text-violet-400 mt-0.5">{subtitle}</p>}
               </div>
             </div>
             <button onClick={onClose}
@@ -44,7 +44,7 @@ export default function SlidePanel({ open, onClose, title, subtitle, children, a
               style={{ border: '1.5px solid rgba(226,232,240,0.9)', background: 'rgba(248,250,252,0.8)' }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#F1F5F9'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(248,250,252,0.8)'; }}>
-              <X size={15} className="text-slate-500" />
+              <X size={15} className="text-violet-500" />
             </button>
           </div>
         </div>

@@ -24,7 +24,7 @@ export default function Topbar({ title, action, searchPlaceholder = "Search rout
     <header className="topbar">
       {/* Left Area (Optional Title or Actions) */}
       <div className="flex items-center gap-6">
-        {title && <h1 className="text-xl font-bold text-slate-900">{title}</h1>}
+        {title && <h1 className="text-xl font-bold text-violet-900">{title}</h1>}
         
         {/* Search */}
         <div className="search-bar">
@@ -65,6 +65,14 @@ export default function Topbar({ title, action, searchPlaceholder = "Search rout
           <div className="avatar">
             <img src="https://i.pravatar.cc/150?u=admin" alt="Admin" />
           </div>
+          <button 
+            onClick={() => {
+              import('@/lib/actions/auth').then((m) => m.logOut());
+            }}
+            className="text-xs font-bold text-red-500 hover:text-red-600 transition-colors ml-2"
+          >
+            Logout
+          </button>
         </div>
       </div>
     </header>

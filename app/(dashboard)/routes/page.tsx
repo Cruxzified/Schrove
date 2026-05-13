@@ -84,15 +84,15 @@ export default function RoutesPage() {
             <tbody>
               {routes.map(r => (
                 <tr key={r.id} onClick={() => setSelected(r)} className="cursor-pointer">
-                  <td><span className="font-mono text-sm font-bold text-slate-800">{r.id}</span></td>
-                  <td className="font-medium text-slate-700">{r.name}</td>
-                  <td className="text-sm text-slate-500 font-mono">{r.distance} km</td>
+                  <td><span className="font-mono text-sm font-bold text-violet-800">{r.id}</span></td>
+                  <td className="font-medium text-violet-700">{r.name}</td>
+                  <td className="text-sm text-violet-500 font-mono">{r.distance} km</td>
                   <td>
                     <div className="flex items-center gap-2">
-                      <div className="w-20 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="w-20 h-1.5 bg-violet-100 rounded-full overflow-hidden">
                         <div className="h-full bg-blue-500 rounded-full" style={{ width: `${r.efficiency}%` }} />
                       </div>
-                      <span className="text-xs font-bold text-slate-600 w-8">{r.efficiency}%</span>
+                      <span className="text-xs font-bold text-violet-600 w-8">{r.efficiency}%</span>
                     </div>
                   </td>
                   <td>
@@ -100,7 +100,7 @@ export default function RoutesPage() {
                       {r.status}
                     </span>
                   </td>
-                  <td className="text-right"><ChevronRight size={16} className="text-slate-300 inline-block" /></td>
+                  <td className="text-right"><ChevronRight size={16} className="text-violet-300 inline-block" /></td>
                 </tr>
               ))}
             </tbody>
@@ -129,13 +129,13 @@ export default function RoutesPage() {
               </div>
 
               <div>
-                 <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 pl-1">Scheduled Stops</div>
-                 <div className="bg-slate-50 border border-slate-200 rounded-xl p-2 space-y-1">
+                 <div className="text-xs font-bold text-violet-400 uppercase tracking-wider mb-3 pl-1">Scheduled Stops</div>
+                 <div className="bg-violet-50 border border-violet-200 rounded-xl p-2 space-y-1">
                    {['Depot', 'Green Park', 'Sunrise Colony', 'Central School'].map((stop, i) => (
-                     <div key={stop} className="flex items-center gap-3 p-2 bg-white rounded-lg border border-slate-100">
-                       <MapPin size={14} className="text-slate-400 shrink-0" />
-                       <span className="text-sm font-medium text-slate-700 flex-1">{stop}</span>
-                       <span className="text-xs font-mono font-bold text-slate-500">
+                     <div key={stop} className="flex items-center gap-3 p-2 bg-white rounded-lg border border-violet-100">
+                       <MapPin size={14} className="text-violet-400 shrink-0" />
+                       <span className="text-sm font-medium text-violet-700 flex-1">{stop}</span>
+                       <span className="text-xs font-mono font-bold text-violet-500">
                          {['07:00', '07:18', '07:34', '08:10'][i]}
                        </span>
                      </div>

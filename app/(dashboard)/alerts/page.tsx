@@ -63,7 +63,7 @@ export default function AlertsPage() {
             <button className="filter-tab">Attendance</button>
             <button className="filter-tab">Safety</button>
           </div>
-          <button className="text-sm font-semibold text-slate-500 flex items-center gap-2 hover:text-slate-800 transition-colors">
+          <button className="text-sm font-semibold text-violet-500 flex items-center gap-2 hover:text-violet-800 transition-colors">
             <ListFilter size={16} /> Sort by Recent
           </button>
         </div>
@@ -72,7 +72,7 @@ export default function AlertsPage() {
           {alerts.map(alert => {
             const Icon = alert.icon;
             return (
-              <div key={alert.id} className="alert-card hover-lift relative group hover:border-slate-300">
+              <div key={alert.id} className="alert-card hover-lift relative group hover:border-violet-300">
                 <div className="alert-icon-wrap" style={{ background: alert.bg, color: alert.color }}>
                   <Icon size={20} />
                 </div>
@@ -80,7 +80,7 @@ export default function AlertsPage() {
                 <div className="flex-1 pt-1">
                   <div className="flex justify-between items-start">
                     <div className="alert-title" style={{ color: alert.color }}>{alert.type}</div>
-                    <div className="text-xs font-mono font-semibold text-slate-400">{alert.time}</div>
+                    <div className="text-xs font-mono font-semibold text-violet-400">{alert.time}</div>
                   </div>
                   
                   <div className="alert-desc">{alert.title}</div>

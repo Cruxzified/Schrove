@@ -43,7 +43,7 @@ export default function Sidebar() {
 
       {/* Footer */}
       <div className="sidebar-footer">
-        <Link href="/settings" className={`settings-btn ${pathname.startsWith('/settings') ? 'text-slate-900 font-semibold' : ''}`}>
+        <Link href="/settings" className={`settings-btn ${pathname.startsWith('/settings') ? 'text-violet-900 font-semibold' : ''}`}>
           <Settings size={18} />
           <span>Settings</span>
         </Link>

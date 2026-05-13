@@ -285,9 +285,9 @@ export function generateHeatmapData() {
 }
 
 export const routes = [
-  { id: 'R-02', name: 'East Heritage Route', stops: 4, distance: 18.2, bus: 'BUS-005', status: 'on-time' },
-  { id: 'R-04', name: 'Green Park Express', stops: 4, distance: 14.6, bus: 'BUS-001', status: 'on-time' },
-  { id: 'R-07', name: 'Lakeside Connector', stops: 4, distance: 21.3, bus: 'BUS-002', status: 'idle' },
-  { id: 'R-09', name: 'South Market Loop', stops: 4, distance: 24.8, bus: 'BUS-004', status: 'delayed' },
-  { id: 'R-12', name: 'Hill Valley Direct', stops: 4, distance: 16.5, bus: 'BUS-003', status: 'on-time' },
+  { id: 'R-02', name: 'East Heritage Route', stops: 4, distance: 18.2, bus: 'BUS-005', status: 'on-time', efficiency: 94 },
+  { id: 'R-04', name: 'Green Park Express', stops: 4, distance: 14.6, bus: 'BUS-001', status: 'on-time', efficiency: 88 },
+  { id: 'R-07', name: 'Lakeside Connector', stops: 4, distance: 21.3, bus: 'BUS-002', status: 'idle', efficiency: 72 },
+  { id: 'R-09', name: 'South Market Loop', stops: 4, distance: 24.8, bus: 'BUS-004', status: 'delayed', efficiency: 45 },
+  { id: 'R-12', name: 'Hill Valley Direct', stops: 4, distance: 16.5, bus: 'BUS-003', status: 'on-time', efficiency: 98 },
 ];
