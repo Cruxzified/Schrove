@@ -1,33 +1,31 @@
 'use client';
 import { useState, useEffect } from 'react';
 import {
-  AreaChart, Area, ResponsiveContainer, YAxis, Tooltip
+  AreaChart, Area, ResponsiveContainer, YAxis, Tooltip, XAxis, BarChart, Bar, Cell
 } from 'recharts';
-import { AlertTriangle, ChevronRight, Plus } from 'lucide-react';
 import Topbar from '@/components/Topbar';
 
 const efficiencyData = [
-  { time: '06:00 AM', value: 30 },
-  { time: '06:30 AM', value: 35 },
-  { time: '07:00 AM', value: 32 },
-  { time: '07:30 AM', value: 28 },
-  { time: '08:00 AM', value: 45 },
-  { time: '08:30 AM', value: 70 },
-  { time: '08:45 AM', value: 85 },
-  { time: '09:00 AM', value: 82 },
+  { time: '00:00', value: 30 },
+  { time: '04:00', value: 45 },
+  { time: '08:00', value: 85 },
+  { time: '12:00', value: 60 },
+  { time: '16:00', value: 75 },
+  { time: '20:00', value: 90 },
+  { time: '23:59', value: 82 },
 ];
 
-const delayedRoutes = [
-  { id: '104', delay: '+12m', name: 'Canyon Ridge Run', driver: 'Michael Chen', img: 'MC' },
-  { id: '218', delay: '+08m', name: 'Westside Loop', driver: 'Sarah Jenkins', img: 'SJ' },
-  { id: '088', delay: '+05m', name: 'North Station Exp.', driver: 'David Miller', img: 'DM' },
+const routePerformance = [
+  { name: 'North Corridor', onTime: 82, delayed: 12 },
+  { name: 'East Side Exp.', onTime: 65, delayed: 25 },
+  { name: 'Downtown Loop', onTime: 95, delayed: 3 },
 ];
 
-const attendanceRoutes = [
-  { id: 'R-12', perc: '100%', name: 'Lakeside Heights', students: '24/24', prog: 100 },
-  { id: 'R-45', perc: '82%', name: 'Oakwood Academy', students: '18/22', prog: 82 },
-  { id: 'R-09', perc: '96%', name: 'Hillcrest Valley', students: '31/32', prog: 96 },
-  { id: 'R-03', perc: '64%', name: 'Pine Street', students: '9/14', prog: 64 },
+const alerts = [
+  { id: 1, title: 'Bus 42 delayed by 15 mins', desc: 'Heavy traffic reported on I-95 corridor. Rerouting suggested.', time: '2 MINS AGO', type: 'error' },
+  { id: 2, title: 'Driver swap completed', desc: 'Terminal A: Smith relieved Johnson for Route 12.', time: '14 MINS AGO', type: 'info' },
+  { id: 3, title: 'Route 12 completed', desc: 'Arrived at final destination safely. 98% efficiency score.', time: '28 MINS AGO', type: 'success' },
+  { id: 4, title: 'Maintenance scheduled', desc: 'Bus 88 scheduled for routine oil change tomorrow 08:00.', time: '1 HR AGO', type: 'maintenance' },
 ];
 
 export default function Dashboard() {
@@ -38,167 +36,209 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <>
-      <Topbar searchPlaceholder="Search routes, buses or students..." />
+    <div className="flex-1 flex flex-col h-full overflow-y-auto">
+      <Topbar title="Operational Intelligence" />
       
-      <div className="page-content">
-        {/* TOP STATS */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="stat-card relative">
-            <div className="absolute top-6 right-6 w-2.5 h-2.5 rounded-full bg-green-500"></div>
-            <div className="stat-label">Active Buses</div>
-            <div className="stat-value">42 <span className="stat-delta pos">+3</span></div>
-            <div className="stat-sub">Fleet in operation</div>
-          </div>
-          
-          <div className="stat-card">
-            <div className="stat-label">Delayed Buses</div>
-            <div className="stat-value text-red-600">3 <span className="stat-delta neg">-1</span></div>
-            <div className="stat-sub">Action required</div>
-          </div>
-
-          <div className="stat-card">
-            <div className="stat-label">Efficiency</div>
-            <div className="stat-value">98.4%</div>
-            <div className="flex gap-1 mt-4">
-               {[1,2,3,4].map(i => <div key={i} className="h-3 flex-1 bg-violet-200 rounded-sm"></div>)}
-               <div className="h-3 flex-1 bg-violet-900 rounded-sm"></div>
-               <div className="h-3 flex-1 bg-violet-500 rounded-sm"></div>
+      <main className="mx-auto flex w-full max-w-container-max flex-1 flex-col gap-md p-md">
+        {/* Metrics Row */}
+        <div className="grid grid-cols-1 gap-md sm:grid-cols-2 lg:grid-cols-4">
+          {/* Card 1 */}
+          <div className="flex h-full flex-col justify-between rounded-xl border border-outline-variant bg-surface-container-lowest p-md shadow-sm transition-all hover:shadow-md">
+            <div className="mb-sm flex justify-between items-start">
+              <span className="font-label-sm uppercase tracking-wider text-on-surface-variant">Active Buses</span>
+              <span className="material-symbols-outlined text-[20px] text-primary">directions_bus</span>
             </div>
-          </div>
-
-          <div className="stat-card">
-            <div className="stat-label">Routes Completed</div>
-            <div className="flex justify-between items-end">
-              <div>
-                <div className="stat-value">12<span className="text-2xl text-violet-400 font-medium">/45</span></div>
-                <div className="stat-sub">Morning Run<br/>Progress</div>
-              </div>
-              <div className="w-16 h-16 rounded-full border-4 border-violet-100 flex items-center justify-center relative">
-                <svg className="absolute inset-0 w-full h-full transform -rotate-90">
-                   <circle cx="30" cy="30" r="28" fill="none" stroke="#2e1065" strokeWidth="4" strokeDasharray="175" strokeDashoffset="130" />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* MIDDLE SECTION */}
-        <div className="grid grid-cols-3 gap-6 mb-8">
-          <div className="col-span-2 card-white flex flex-col">
-            <div className="card-header">
-              <div>
-                <div className="card-title text-2xl">Live Efficiency</div>
-                <div className="card-subtitle">Performance over the morning run</div>
-              </div>
-              <div className="flex bg-violet-100 p-1 rounded-lg">
-                <button className="px-4 py-1.5 text-sm font-semibold bg-white rounded-md shadow-sm">Real-time</button>
-                <button className="px-4 py-1.5 text-sm font-medium text-violet-500">Historical</button>
-              </div>
-            </div>
-            <div className="flex-1 p-6 pt-0 min-h-[300px]">
-              {mounted ? (
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={efficiencyData} margin={{ top: 20, right: 10, left: -20, bottom: 0 }}>
-                    <defs>
-                      <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#2e1065" stopOpacity={0.15}/>
-                        <stop offset="95%" stopColor="#2e1065" stopOpacity={0}/>
-                      </linearGradient>
-                    </defs>
-                    <YAxis hide domain={[0, 100]} />
-                    <Tooltip 
-                      contentStyle={{ borderRadius: '12px', border: '1px solid rgba(46,16,101,0.05)', boxShadow: '0 10px 25px -5px rgba(46,16,101,0.1)', padding: '12px' }}
-                      itemStyle={{ color: '#2e1065', fontWeight: 600 }}
-                    />
-                    <Area type="monotone" dataKey="value" stroke="#2e1065" strokeWidth={5} fillOpacity={1} fill="url(#colorValue)" activeDot={{ r: 6, fill: '#2e1065', stroke: '#fff', strokeWidth: 3 }} />
-                  </AreaChart>
-                </ResponsiveContainer>
-              ) : <div className="w-full h-full bg-violet-50 rounded-lg animate-pulse" />}
-              <div className="flex justify-between text-xs font-bold text-violet-500 mt-2 px-2 uppercase tracking-wider">
-                <span>06:00 AM</span>
-                <span>07:00 AM</span>
-                <span>08:00 AM</span>
-                <span>09:00 AM</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-span-1 card-white flex flex-col">
-            <div className="card-header border-b-0 pb-2">
-              <div className="flex items-center gap-2">
-                <AlertTriangle size={20} className="text-red-500" />
-                <div className="card-title">Delayed Routes</div>
-              </div>
-            </div>
-            <div className="p-4 flex-1 flex flex-col gap-3">
-              {delayedRoutes.map((route, i) => (
-                <div key={i} className="hover-lift border border-violet-200 rounded-xl p-4 flex items-center justify-between hover:bg-violet-50 cursor-pointer transition-colors bg-white">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="bg-violet-100 text-violet-600 text-[11px] font-bold px-2 py-0.5 rounded uppercase">Bus #{route.id}</span>
-                      <span className="text-red-600 font-bold text-xs">{route.delay}</span>
-                    </div>
-                    <div className="font-bold text-[15px] text-violet-900 mb-2">{route.name}</div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-5 h-5 rounded-full bg-violet-800 text-white flex items-center justify-center text-[9px] font-bold">{route.img}</div>
-                      <span className="text-sm text-violet-600 font-medium">{route.driver}</span>
-                    </div>
-                  </div>
-                  <ChevronRight size={18} className="text-violet-400" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* BOTTOM SECTION */}
-        <div className="relative">
-          <div className="flex justify-between items-end mb-4">
             <div>
-              <div className="text-xl font-bold text-violet-900">Attendance Overview</div>
-              <div className="text-sm text-violet-500 mt-1">Real-time student boarding status across active routes</div>
-            </div>
-            <button className="text-sm font-bold flex items-center gap-1 hover:text-blue-600 transition-colors">
-              View All Reports <ChevronRight size={16} />
-            </button>
-          </div>
-
-          <div className="grid grid-cols-4 gap-4 pb-12">
-            {attendanceRoutes.map((rt, i) => (
-              <div key={i} className="card-white p-5">
-                <div className="flex justify-between items-center mb-4 text-xs font-bold font-mono tracking-wide">
-                  <span className="text-violet-900">ROUTE {rt.id}</span>
-                  <span className="text-violet-600">{rt.perc}</span>
-                </div>
-                <div className="font-bold text-[15px] text-violet-900 mb-1">{rt.name}</div>
-                <div className="text-[13px] text-violet-500 font-medium mb-6">{rt.students} Students Boarded</div>
-                
-                {i === 0 ? (
-                  <div className="flex">
-                     <div className="w-7 h-7 rounded-full bg-violet-200 border-2 border-white z-10"></div>
-                     <div className="w-7 h-7 rounded-full bg-violet-300 border-2 border-white -ml-2 z-20"></div>
-                     <div className="w-7 h-7 rounded-full bg-violet-400 border-2 border-white -ml-2 z-30"></div>
-                     <div className="w-7 h-7 rounded-full bg-violet-900 border-2 border-white -ml-2 z-40 text-white flex items-center justify-center text-[10px] font-bold">+21</div>
-                  </div>
-                ) : (
-                  <div className="prog-track h-1.5">
-                    <div className="prog-fill bg-violet-900" style={{ width: `${rt.prog}%` }}></div>
-                  </div>
-                )}
+              <div className="font-metric-md text-on-surface">342</div>
+              <div className="mt-xs flex items-center gap-xs">
+                <span className="material-symbols-outlined text-[16px] text-primary">trending_up</span>
+                <span className="font-label-sm text-on-surface-variant">Active right now</span>
               </div>
-            ))}
+            </div>
           </div>
 
-          {/* FLOATING ACTION */}
-          <div className="absolute right-0 bottom-6 z-10">
-            <button className="glass text-white px-6 py-4 rounded-xl font-bold text-sm flex items-center gap-3">
-              <Plus size={18} /> Dispatch Emergency Bus
-            </button>
+          {/* Card 2 */}
+          <div className="flex h-full flex-col justify-between rounded-xl border border-outline-variant bg-surface-container-lowest p-md shadow-sm transition-all hover:shadow-md">
+            <div className="mb-sm flex justify-between items-start">
+              <span className="font-label-sm uppercase tracking-wider text-on-surface-variant">Delayed Buses</span>
+              <span className="material-symbols-outlined text-[20px] text-outline">schedule</span>
+            </div>
+            <div>
+              <div className="font-metric-md text-on-surface">14</div>
+              <div className="mt-xs flex items-center gap-xs">
+                <span className="material-symbols-outlined text-[16px] text-[#b45309]">warning</span>
+                <span className="font-label-sm text-[#b45309]">Amber warning active</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 3 */}
+          <div className="flex h-full flex-col justify-between rounded-xl border border-outline-variant bg-surface-container-lowest p-md shadow-sm transition-all hover:shadow-md">
+            <div className="mb-sm flex justify-between items-start">
+              <span className="font-label-sm uppercase tracking-wider text-on-surface-variant">Fleet Efficiency</span>
+              <span className="material-symbols-outlined text-[20px] text-primary">bolt</span>
+            </div>
+            <div>
+              <div className="font-metric-md text-on-surface">92.4%</div>
+              <div className="mt-xs flex items-center gap-xs">
+                <span className="material-symbols-outlined text-[16px] text-[#15803d]">arrow_upward</span>
+                <span className="font-label-sm text-[#15803d]">+2.1% vs last week</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 4 */}
+          <div className="flex h-full flex-col justify-between rounded-xl border border-outline-variant bg-surface-container-lowest p-md shadow-sm transition-all hover:shadow-md">
+            <div className="mb-sm flex justify-between items-start">
+              <span className="font-label-sm uppercase tracking-wider text-on-surface-variant">Routes Completed</span>
+              <span className="material-symbols-outlined text-[20px] text-outline">check_circle</span>
+            </div>
+            <div>
+              <div className="font-metric-md text-on-surface">845</div>
+              <div className="mt-xs flex w-full items-center">
+                <div className="h-1.5 flex-1 rounded-full bg-surface-container-highest overflow-hidden">
+                  <div className="h-full bg-primary rounded-full" style={{ width: '75%' }}></div>
+                </div>
+                <span className="ml-xs font-label-sm text-on-surface-variant">75%</span>
+              </div>
+            </div>
           </div>
         </div>
 
-      </div>
-    </>
+        {/* Operational Intelligence Section */}
+        <div className="mt-sm">
+          <h2 className="font-headline-sm mb-md text-on-surface">Operational Intelligence</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-md">
+            {/* Left Column: Charts */}
+            <div className="lg:col-span-8 flex flex-col gap-md">
+              {/* Fleet Efficiency Chart */}
+              <div className="flex flex-col rounded-xl border border-outline-variant bg-surface-container-lowest p-md shadow-sm">
+                <div className="mb-lg flex items-center justify-between">
+                  <div>
+                    <h3 className="font-headline-sm text-on-surface">Fleet Efficiency & Performance</h3>
+                    <p className="font-body-base text-on-surface-variant">24-hour network aggregate</p>
+                  </div>
+                  <div className="flex items-center gap-sm">
+                    <span className="flex items-center gap-xs font-label-sm text-on-surface-variant">
+                      <span className="h-2 w-2 rounded-full bg-primary"></span>
+                      Efficiency Score
+                    </span>
+                    <button className="flex items-center gap-xs rounded-lg border border-outline-variant px-xs py-[2px] font-label-sm text-on-surface-variant hover:bg-surface-container-low transition-colors">
+                      Today <span className="material-symbols-outlined text-[16px]">expand_more</span>
+                    </button>
+                  </div>
+                </div>
+                
+                <div className="h-[240px] w-full">
+                  {mounted ? (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={efficiencyData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                        <defs>
+                          <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#4f46e5" stopOpacity={0.2} />
+                            <stop offset="100%" stopColor="#4f46e5" stopOpacity={0} />
+                          </linearGradient>
+                        </defs>
+                        <XAxis 
+                          dataKey="time" 
+                          axisLine={false} 
+                          tickLine={false} 
+                          tick={{ fontSize: 10, fill: '#464555' }} 
+                          dy={10}
+                        />
+                        <YAxis 
+                          hide 
+                          domain={[0, 100]} 
+                        />
+                        <Tooltip 
+                          contentStyle={{ borderRadius: '12px', border: '1px solid #c7c4d8', boxShadow: '0 8px 16px rgba(0,0,0,0.08)' }}
+                        />
+                        <Area 
+                          type="monotone" 
+                          dataKey="value" 
+                          stroke="#4f46e5" 
+                          strokeWidth={3} 
+                          fill="url(#chartGradient)" 
+                          activeDot={{ r: 6, fill: '#4f46e5', stroke: '#fff', strokeWidth: 2 }} 
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  ) : <div className="h-full w-full animate-pulse bg-surface-container-low" />}
+                </div>
+              </div>
+
+              {/* Route Performance Bar Chart */}
+              <div className="flex flex-col rounded-xl border border-outline-variant bg-surface-container-lowest p-md shadow-sm">
+                <h3 className="font-headline-sm mb-md text-on-surface">Route Performance Distribution</h3>
+                <div className="flex flex-col gap-sm">
+                  {routePerformance.map((route, i) => (
+                    <div key={i} className="flex w-full items-center gap-sm">
+                      <span className="w-[100px] truncate text-right font-label-sm text-on-surface">{route.name}</span>
+                      <div className="flex h-3 flex-1 overflow-hidden rounded-full bg-surface-container-highest">
+                        <div className="h-full bg-primary transition-all duration-500" style={{ width: `${route.onTime}%` }}></div>
+                        <div className="h-full bg-[#f59e0b] transition-all duration-500" style={{ width: `${route.delayed}%` }}></div>
+                      </div>
+                      <span className="w-[40px] text-right font-label-sm text-on-surface-variant">{route.onTime}%</span>
+                    </div>
+                  ))}
+                  
+                  <div className="mt-sm flex items-center justify-end gap-md border-t border-outline-variant pt-sm">
+                    <span className="flex items-center gap-xs font-label-sm text-on-surface-variant">
+                      <span className="h-2 w-2 rounded-full bg-primary"></span> On-Time
+                    </span>
+                    <span className="flex items-center gap-xs font-label-sm text-on-surface-variant">
+                      <span className="h-2 w-2 rounded-full bg-[#f59e0b]"></span> Delayed
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column: Alerts */}
+            <div className="lg:col-span-4 flex flex-col h-full">
+              <div className="flex flex-col rounded-xl border border-outline-variant bg-surface-container-lowest p-md shadow-sm h-full lg:max-h-[600px]">
+                <div className="mb-md flex items-center justify-between border-b border-outline-variant pb-xs">
+                  <h3 className="font-headline-sm flex items-center gap-xs text-on-surface">
+                    Real-time Alerts
+                    <span className="h-2 w-2 animate-pulse rounded-full bg-primary"></span>
+                  </h3>
+                  <button className="font-label-sm text-primary hover:underline transition-all">View All</button>
+                </div>
+                
+                <div className="flex flex-1 flex-col gap-sm overflow-y-auto pr-xs custom-scrollbar">
+                  {alerts.map((alert) => (
+                    <div key={alert.id} className="flex items-start gap-sm border-b border-outline-variant border-opacity-50 py-xs last:border-0 hover:bg-surface-container-low transition-colors rounded-lg px-1">
+                      <div className={`mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full ${
+                        alert.type === 'error' ? 'bg-error-container' : 
+                        alert.type === 'success' ? 'bg-[#dcfce7]' : 
+                        alert.type === 'info' ? 'bg-primary-container/20' : 'bg-surface-container-highest'
+                      }`}>
+                        <span className={`material-symbols-outlined text-[14px] ${
+                          alert.type === 'error' ? 'text-on-error-container' : 
+                          alert.type === 'success' ? 'text-[#166534]' : 
+                          alert.type === 'info' ? 'text-primary' : 'text-on-surface-variant'
+                        }`}>
+                          {alert.type === 'error' ? 'warning' : 
+                           alert.type === 'success' ? 'check_circle' : 
+                           alert.type === 'info' ? 'info' : 'build'}
+                        </span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="font-label-sm font-semibold text-on-surface">{alert.title}</span>
+                        <span className="font-body-base text-[13px] text-on-surface-variant">{alert.desc}</span>
+                        <span className="font-label-caps mt-xs text-outline text-[10px]">{alert.time}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom padding */}
+        <div className="h-lg"></div>
+      </main>
+    </div>
   );
 }
