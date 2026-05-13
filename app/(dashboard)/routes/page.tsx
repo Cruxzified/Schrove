@@ -12,7 +12,7 @@ export default function RoutesPage() {
 
   return (
     <>
-      <Topbar title="Routes" action={{ label: 'New Route' }} />
+      <Topbar title="Routes" actionLabel="New Route" />
       <div className="page-content">
         
         <div className="flex justify-between items-end mb-8">
