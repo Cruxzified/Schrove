@@ -1,7 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  /* MD3 Color Palette from User Template */
+  /* MD3 Color Palette (New Design System) */
   --color-on-error-container: #93000a;
   --color-inverse-surface: #2d3133;
   --color-on-tertiary: #ffffff;
@@ -50,7 +51,7 @@
   --color-tertiary-container: #586076;
   --color-primary-fixed: #e2dfff;
 
-  /* Spacing */
+  /* Custom Spacing Tokens */
   --spacing-xl: 64px;
   --spacing-container-max: 1440px;
   --spacing-md: 24px;
@@ -70,56 +71,47 @@
   --font-label-sm: "Inter", sans-serif;
   --font-headline-display: "Inter", sans-serif;
   --font-body-lg: "Inter", sans-serif;
-
-  /* Custom Font Sizes & Weights */
-  --font-size-headline-sm: 18px;
-  --line-height-headline-sm: 24px;
-  --font-weight-headline-sm: 600;
-
-  --font-size-metric-lg: 48px;
-  --line-height-metric-lg: 56px;
-  --letter-spacing-metric-lg: -0.02em;
-  --font-weight-metric-lg: 600;
-
-  --font-size-body-base: 14px;
-  --line-height-body-base: 20px;
-  --font-weight-body-base: 400;
-
-  --font-size-metric-md: 32px;
-  --line-height-metric-md: 40px;
-  --letter-spacing-metric-md: -0.01em;
-  --font-weight-metric-md: 600;
-
-  --font-size-label-caps: 12px;
-  --line-height-label-caps: 16px;
-  --letter-spacing-label-caps: 0.05em;
-  --font-weight-label-caps: 600;
-
-  --font-size-label-sm: 12px;
-  --line-height-label-sm: 16px;
-  --font-weight-label-sm: 500;
-
-  --font-size-headline-display: 24px;
-  --line-height-headline-display: 32px;
-  --font-weight-headline-display: 600;
-
-  --font-size-body-lg: 16px;
-  --line-height-body-lg: 24px;
-  --font-weight-body-lg: 400;
 }
 
-@layer base {
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; overflow-x: hidden; }
-  body {
-    font-family: var(--font-inter);
-    background-color: var(--color-background);
-    color: var(--color-on-background);
-    -webkit-font-smoothing: antialiased;
-    line-height: 1.5;
-  }
+:root {
+  --sidebar-w: 240px;
+  --topbar-h: 72px;
+
+  /* Original Vibrant Aesthetic Variables (RESTORED for Signup Page) */
+  --bg:         #faf5ff;
+  --surface:    rgba(255, 255, 255, 0.85);
+  --sidebar-bg: rgba(255, 255, 255, 0.6);
+  --border:     #e9d5ff;
+  --border-2:   #f3e8ff;
+
+  --text-1:  #2e1065;
+  --text-2:  #4c1d95;
+  --text-3:  #7c3aed;
+  --text-4:  #a78bfa;
+
+  --blue:     #3b82f6;
+  --blue-bg:  #eff6ff;
+  --green:    #10b981;
+  --green-bg: #ecfdf5;
+  --amber:    #f59e0b;
+  --amber-bg: #fffbeb;
+  --red:      #ef4444;
+  --red-bg:   #fef2f2;
 }
 
+/* Original Base Styles */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg);
+  color: var(--text-1);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+}
+
+/* Material Symbols (New) */
 .material-symbols-outlined {
   font-family: 'Material Symbols Outlined';
   font-weight: normal;
@@ -136,21 +128,59 @@
   -webkit-font-smoothing: antialiased;
 }
 
-::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--color-outline-variant); border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: var(--color-outline); }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
 
-/* Custom utilities for the charts and specific components */
-.preserve-3d { transform-style: preserve-3d; }
+/* ══════════════════════════════════════════
+   RESTORED UTILITY CLASSES (for Signup & Legacy support)
+   ══════════════════════════════════════════ */
+.stat-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border-radius: 24px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(124, 58, 237, 0.05), inset 0 1px 0 rgba(255, 255, 255, 1);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.stat-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(124, 58, 237, 0.12), inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+.card-white {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(124, 58, 237, 0.05), inset 0 1px 0 rgba(255, 255, 255, 1);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+.hover-lift {
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.hover-lift:hover {
+  transform: translateY(-4px) scale(1.01);
+}
+.glass {
+  background: linear-gradient(135deg, rgba(76, 29, 149, 0.8), rgba(124, 58, 237, 0.9));
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 0 #3b0764, 0 20px 40px rgba(76, 29, 149, 0.3), inset 0 1px 2px rgba(255,255,255,0.4);
+}
 
+/* ══════════════════════════════════════════
+   NEW WIZOR THEME CLASSES (MD3 Support)
+   ══════════════════════════════════════════ */
 @layer utilities {
-  .font-headline-sm { font-size: var(--font-size-headline-sm); line-height: var(--line-height-headline-sm); font-weight: var(--font-weight-headline-sm); }
-  .font-metric-lg { font-size: var(--font-size-metric-lg); line-height: var(--line-height-metric-lg); letter-spacing: var(--letter-spacing-metric-lg); font-weight: var(--font-weight-metric-lg); }
-  .font-body-base { font-size: var(--font-size-body-base); line-height: var(--line-height-body-base); font-weight: var(--font-weight-body-base); }
-  .font-metric-md { font-size: var(--font-size-metric-md); line-height: var(--line-height-metric-md); letter-spacing: var(--letter-spacing-metric-md); font-weight: var(--font-weight-metric-md); }
-  .font-label-caps { font-size: var(--font-size-label-caps); line-height: var(--line-height-label-caps); letter-spacing: var(--letter-spacing-label-caps); font-weight: var(--font-weight-label-caps); }
-  .font-label-sm { font-size: var(--font-size-label-sm); line-height: var(--line-height-label-sm); font-weight: var(--font-weight-label-sm); }
-  .font-headline-display { font-size: var(--font-size-headline-display); line-height: var(--line-height-headline-display); font-weight: var(--font-weight-headline-display); }
-  .font-body-lg { font-size: var(--font-size-body-lg); line-height: var(--line-height-body-lg); font-weight: var(--font-weight-body-lg); }
+  .font-headline-sm { font-size: 18px; line-height: 24px; font-weight: 600; }
+  .font-metric-lg { font-size: 48px; line-height: 56px; letter-spacing: -0.02em; font-weight: 600; }
+  .font-body-base { font-size: 14px; line-height: 20px; font-weight: 400; }
+  .font-metric-md { font-size: 32px; line-height: 40px; letter-spacing: -0.01em; font-weight: 600; }
+  .font-label-caps { font-size: 12px; line-height: 16px; letter-spacing: 0.05em; font-weight: 600; }
+  .font-label-sm { font-size: 12px; line-height: 16px; font-weight: 500; }
+  .font-headline-display { font-size: 24px; line-height: 32px; font-weight: 600; }
+  .font-body-lg { font-size: 16px; line-height: 24px; font-weight: 400; }
 }
