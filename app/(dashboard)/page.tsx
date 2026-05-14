@@ -1,199 +1,261 @@
 'use client';
 import { useState, useEffect } from 'react';
-import {
-  AreaChart, Area, ResponsiveContainer, YAxis, Tooltip
-} from 'recharts';
-import { AlertTriangle, ChevronRight, Plus } from 'lucide-react';
+import { AreaChart, Area, ResponsiveContainer, YAxis, Tooltip, XAxis } from 'recharts';
+import { AlertTriangle, ChevronRight, Plus, TrendingUp, Bus, Clock, CheckCircle, ArrowUpRight } from 'lucide-react';
 import Topbar from '@/components/Topbar';
 
 const efficiencyData = [
-  { time: '06:00 AM', value: 30 },
-  { time: '06:30 AM', value: 35 },
-  { time: '07:00 AM', value: 32 },
-  { time: '07:30 AM', value: 28 },
-  { time: '08:00 AM', value: 45 },
-  { time: '08:30 AM', value: 70 },
-  { time: '08:45 AM', value: 85 },
-  { time: '09:00 AM', value: 82 },
+  { time: '6AM',  value: 30 },
+  { time: '6:30', value: 35 },
+  { time: '7AM',  value: 32 },
+  { time: '7:30', value: 28 },
+  { time: '8AM',  value: 55 },
+  { time: '8:30', value: 78 },
+  { time: '8:45', value: 88 },
+  { time: '9AM',  value: 84 },
 ];
 
 const delayedRoutes = [
-  { id: '104', delay: '+12m', name: 'Canyon Ridge Run', driver: 'Michael Chen', img: 'MC' },
-  { id: '218', delay: '+08m', name: 'Westside Loop', driver: 'Sarah Jenkins', img: 'SJ' },
-  { id: '088', delay: '+05m', name: 'North Station Exp.', driver: 'David Miller', img: 'DM' },
+  { id: '104', delay: '+12m', name: 'Canyon Ridge Run',  driver: 'Michael Chen',   initials: 'MC', color: '#EF4444' },
+  { id: '218', delay: '+08m', name: 'Westside Loop',     driver: 'Sarah Jenkins',  initials: 'SJ', color: '#F59E0B' },
+  { id: '088', delay: '+05m', name: 'North Station Exp', driver: 'David Miller',   initials: 'DM', color: '#F59E0B' },
 ];
 
 const attendanceRoutes = [
-  { id: 'R-12', perc: '100%', name: 'Lakeside Heights', students: '24/24', prog: 100 },
-  { id: 'R-45', perc: '82%', name: 'Oakwood Academy', students: '18/22', prog: 82 },
-  { id: 'R-09', perc: '96%', name: 'Hillcrest Valley', students: '31/32', prog: 96 },
-  { id: 'R-03', perc: '64%', name: 'Pine Street', students: '9/14', prog: 64 },
+  { id: 'R-12', perc: 100, name: 'Lakeside Heights', students: '24/24', color: '#10B981' },
+  { id: 'R-45', perc: 82,  name: 'Oakwood Academy',  students: '18/22', color: '#6366F1' },
+  { id: 'R-09', perc: 96,  name: 'Hillcrest Valley', students: '31/32', color: '#10B981' },
+  { id: 'R-03', perc: 64,  name: 'Pine Street',      students: '9/14',  color: '#F59E0B' },
+];
+
+const kpis = [
+  {
+    label: 'Active Buses',
+    value: '42',
+    delta: '+3',
+    pos: true,
+    sub: 'Fleet in operation',
+    icon: Bus,
+    iconBg: '#EEF2FF',
+    iconColor: '#6366F1',
+    dot: '#10B981',
+  },
+  {
+    label: 'Delayed Buses',
+    value: '3',
+    delta: '-1',
+    pos: false,
+    sub: 'Action required',
+    icon: AlertTriangle,
+    iconBg: '#FEF2F2',
+    iconColor: '#EF4444',
+    dot: null,
+  },
+  {
+    label: 'Fleet Efficiency',
+    value: '98.4%',
+    delta: '+1.2%',
+    pos: true,
+    sub: 'vs last week',
+    icon: TrendingUp,
+    iconBg: '#ECFDF5',
+    iconColor: '#10B981',
+    dot: null,
+  },
+  {
+    label: 'Routes Completed',
+    value: '12/45',
+    delta: '27%',
+    pos: true,
+    sub: 'Morning run progress',
+    icon: CheckCircle,
+    iconBg: '#FFFBEB',
+    iconColor: '#F59E0B',
+    dot: null,
+  },
 ];
 
 export default function Dashboard() {
   const [mounted, setMounted] = useState(false);
+  const [activeTab, setActiveTab] = useState<'realtime' | 'historical'>('realtime');
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  useEffect(() => { setMounted(true); }, []);
 
   return (
     <>
-      <Topbar searchPlaceholder="Search routes, buses or students..." />
-      
+      <Topbar title="Overview" subtitle="Good morning — here's what's happening today" />
+
       <div className="page-content">
-        {/* TOP STATS */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="stat-card relative">
-            <div className="absolute top-6 right-6 w-2.5 h-2.5 rounded-full bg-green-500"></div>
-            <div className="stat-label">Active Buses</div>
-            <div className="stat-value">42 <span className="stat-delta pos">+3</span></div>
-            <div className="stat-sub">Fleet in operation</div>
-          </div>
-          
-          <div className="stat-card">
-            <div className="stat-label">Delayed Buses</div>
-            <div className="stat-value text-red-600">3 <span className="stat-delta neg">-1</span></div>
-            <div className="stat-sub">Action required</div>
-          </div>
 
-          <div className="stat-card">
-            <div className="stat-label">Efficiency</div>
-            <div className="stat-value">98.4%</div>
-            <div className="flex gap-1 mt-4">
-               {[1,2,3,4].map(i => <div key={i} className="h-3 flex-1 bg-violet-200 rounded-sm"></div>)}
-               <div className="h-3 flex-1 bg-violet-900 rounded-sm"></div>
-               <div className="h-3 flex-1 bg-violet-500 rounded-sm"></div>
-            </div>
-          </div>
-
-          <div className="stat-card">
-            <div className="stat-label">Routes Completed</div>
-            <div className="flex justify-between items-end">
-              <div>
-                <div className="stat-value">12<span className="text-2xl text-violet-400 font-medium">/45</span></div>
-                <div className="stat-sub">Morning Run<br/>Progress</div>
+        {/* KPI STRIP */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-5 mb-6">
+          {kpis.map((k, i) => {
+            const Icon = k.icon;
+            return (
+              <div key={i} className="stat-card">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
+                  <div style={{ width: 38, height: 38, borderRadius: 10, background: k.iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Icon size={18} style={{ color: k.iconColor }} />
+                  </div>
+                  {k.dot && <div style={{ width: 8, height: 8, borderRadius: '50%', background: k.dot, boxShadow: `0 0 0 3px ${k.dot}33` }} />}
+                  {!k.dot && (
+                    <span className={`stat-delta ${k.pos ? 'pos' : 'neg'}`}>{k.delta}</span>
+                  )}
+                </div>
+                <div className="stat-label">{k.label}</div>
+                <div className="stat-value" style={{ fontSize: 30 }}>{k.value}</div>
+                <div className="stat-sub">{k.sub}</div>
               </div>
-              <div className="w-16 h-16 rounded-full border-4 border-violet-100 flex items-center justify-center relative">
-                <svg className="absolute inset-0 w-full h-full transform -rotate-90">
-                   <circle cx="30" cy="30" r="28" fill="none" stroke="#2e1065" strokeWidth="4" strokeDasharray="175" strokeDashoffset="130" />
-                </svg>
-              </div>
-            </div>
-          </div>
+            );
+          })}
         </div>
 
-        {/* MIDDLE SECTION */}
-        <div className="grid grid-cols-3 gap-6 mb-8">
-          <div className="col-span-2 card-white flex flex-col">
+        {/* MIDDLE: Chart + Delayed */}
+        <div className="grid grid-cols-3 gap-5 mb-6">
+          {/* Chart */}
+          <div className="card-white col-span-2 flex flex-col" style={{ overflow: 'hidden' }}>
             <div className="card-header">
               <div>
-                <div className="card-title text-2xl">Live Efficiency</div>
-                <div className="card-subtitle">Performance over the morning run</div>
+                <div className="card-title">Live Efficiency</div>
+                <div className="card-subtitle">Fleet performance during the morning run</div>
               </div>
-              <div className="flex bg-violet-100 p-1 rounded-lg">
-                <button className="px-4 py-1.5 text-sm font-semibold bg-white rounded-md shadow-sm">Real-time</button>
-                <button className="px-4 py-1.5 text-sm font-medium text-violet-500">Historical</button>
+              <div style={{ display: 'flex', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, padding: 3, gap: 2 }}>
+                {(['realtime', 'historical'] as const).map(tab => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    style={{
+                      padding: '5px 14px', borderRadius: 6, border: 'none', cursor: 'pointer',
+                      fontSize: 12.5, fontWeight: 600, transition: 'all 0.15s',
+                      background: activeTab === tab ? 'white' : 'transparent',
+                      color: activeTab === tab ? 'var(--text-1)' : 'var(--text-4)',
+                      boxShadow: activeTab === tab ? '0 1px 4px rgba(0,0,0,0.08)' : 'none',
+                    }}
+                  >
+                    {tab === 'realtime' ? 'Real-time' : 'Historical'}
+                  </button>
+                ))}
               </div>
             </div>
-            <div className="flex-1 p-6 pt-0 min-h-[300px]">
+
+            <div style={{ flex: 1, padding: '8px 20px 16px', minHeight: 240, height: 240 }}>
               {mounted ? (
                 <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={efficiencyData} margin={{ top: 20, right: 10, left: -20, bottom: 0 }}>
+                  <AreaChart data={efficiencyData} margin={{ top: 10, right: 8, left: -20, bottom: 0 }}>
                     <defs>
-                      <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#2e1065" stopOpacity={0.15}/>
-                        <stop offset="95%" stopColor="#2e1065" stopOpacity={0}/>
+                      <linearGradient id="effGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%"  stopColor="#6366F1" stopOpacity={0.18} />
+                        <stop offset="95%" stopColor="#6366F1" stopOpacity={0} />
                       </linearGradient>
                     </defs>
+                    <XAxis dataKey="time" tick={{ fontSize: 11, fill: '#94A3B8', fontWeight: 500 }} axisLine={false} tickLine={false} />
                     <YAxis hide domain={[0, 100]} />
-                    <Tooltip 
-                      contentStyle={{ borderRadius: '12px', border: '1px solid rgba(46,16,101,0.05)', boxShadow: '0 10px 25px -5px rgba(46,16,101,0.1)', padding: '12px' }}
-                      itemStyle={{ color: '#2e1065', fontWeight: 600 }}
+                    <Tooltip
+                      contentStyle={{ borderRadius: 10, border: '1px solid var(--border)', boxShadow: '0 8px 24px rgba(0,0,0,0.08)', padding: '10px 14px', fontSize: 13 }}
+                      itemStyle={{ color: '#6366F1', fontWeight: 700 }}
+                      labelStyle={{ color: 'var(--text-3)', fontSize: 11 }}
                     />
-                    <Area type="monotone" dataKey="value" stroke="#2e1065" strokeWidth={5} fillOpacity={1} fill="url(#colorValue)" activeDot={{ r: 6, fill: '#2e1065', stroke: '#fff', strokeWidth: 3 }} />
+                    <Area
+                      type="monotone" dataKey="value" stroke="#6366F1" strokeWidth={2.5}
+                      fillOpacity={1} fill="url(#effGrad)"
+                      activeDot={{ r: 5, fill: '#6366F1', stroke: '#fff', strokeWidth: 2.5 }}
+                    />
                   </AreaChart>
                 </ResponsiveContainer>
-              ) : <div className="w-full h-full bg-violet-50 rounded-lg animate-pulse" />}
-              <div className="flex justify-between text-xs font-bold text-violet-500 mt-2 px-2 uppercase tracking-wider">
-                <span>06:00 AM</span>
-                <span>07:00 AM</span>
-                <span>08:00 AM</span>
-                <span>09:00 AM</span>
-              </div>
+              ) : (
+                <div style={{ width: '100%', height: '100%', background: 'var(--bg)', borderRadius: 10, animation: 'pulse 1.5s infinite' }} />
+              )}
             </div>
           </div>
 
-          <div className="col-span-1 card-white flex flex-col">
-            <div className="card-header border-b-0 pb-2">
-              <div className="flex items-center gap-2">
-                <AlertTriangle size={20} className="text-red-500" />
+          {/* Delayed Routes */}
+          <div className="card-white flex flex-col" style={{ overflow: 'hidden' }}>
+            <div className="card-header" style={{ borderBottom: '1px solid var(--border-light)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div style={{ width: 30, height: 30, borderRadius: 8, background: 'var(--red-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <AlertTriangle size={15} style={{ color: 'var(--red)' }} />
+                </div>
                 <div className="card-title">Delayed Routes</div>
               </div>
+              <span style={{ fontSize: 11, fontWeight: 700, background: 'var(--red-bg)', color: 'var(--red)', padding: '2px 8px', borderRadius: 6 }}>
+                {delayedRoutes.length} Active
+              </span>
             </div>
-            <div className="p-4 flex-1 flex flex-col gap-3">
-              {delayedRoutes.map((route, i) => (
-                <div key={i} className="hover-lift border border-violet-200 rounded-xl p-4 flex items-center justify-between hover:bg-violet-50 cursor-pointer transition-colors bg-white">
+
+            <div style={{ flex: 1, padding: '12px', display: 'flex', flexDirection: 'column', gap: 8, overflowY: 'auto' }}>
+              {delayedRoutes.map((r, i) => (
+                <div key={i} className="hover-lift" style={{
+                  border: '1px solid var(--border)', borderRadius: 10, padding: '12px 14px',
+                  cursor: 'pointer', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                }}>
                   <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="bg-violet-100 text-violet-600 text-[11px] font-bold px-2 py-0.5 rounded uppercase">Bus #{route.id}</span>
-                      <span className="text-red-600 font-bold text-xs">{route.delay}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 4 }}>
+                      <span style={{ fontSize: 10.5, fontWeight: 700, background: 'var(--accent-muted)', color: 'var(--accent)', padding: '2px 7px', borderRadius: 5, letterSpacing: '0.04em' }}>
+                        BUS #{r.id}
+                      </span>
+                      <span style={{ fontSize: 11.5, fontWeight: 700, color: r.color }}>{r.delay}</span>
                     </div>
-                    <div className="font-bold text-[15px] text-violet-900 mb-2">{route.name}</div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-5 h-5 rounded-full bg-violet-800 text-white flex items-center justify-center text-[9px] font-bold">{route.img}</div>
-                      <span className="text-sm text-violet-600 font-medium">{route.driver}</span>
+                    <div style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--text-1)', marginBottom: 5 }}>{r.name}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <div style={{ width: 20, height: 20, borderRadius: '50%', background: 'var(--text-1)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, fontWeight: 700 }}>
+                        {r.initials}
+                      </div>
+                      <span style={{ fontSize: 12, color: 'var(--text-3)', fontWeight: 500 }}>{r.driver}</span>
                     </div>
                   </div>
-                  <ChevronRight size={18} className="text-violet-400" />
+                  <ChevronRight size={16} style={{ color: 'var(--text-5)' }} />
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* BOTTOM SECTION */}
-        <div className="relative">
-          <div className="flex justify-between items-end mb-4">
+        {/* ATTENDANCE OVERVIEW */}
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
             <div>
-              <div className="text-xl font-bold text-violet-900">Attendance Overview</div>
-              <div className="text-sm text-violet-500 mt-1">Real-time student boarding status across active routes</div>
+              <div style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-1)' }}>Attendance Overview</div>
+              <div style={{ fontSize: 12.5, color: 'var(--text-4)', marginTop: 2 }}>Real-time student boarding across active routes</div>
             </div>
-            <button className="text-sm font-bold flex items-center gap-1 hover:text-blue-600 transition-colors">
-              View All Reports <ChevronRight size={16} />
+            <button className="btn-secondary" style={{ gap: 6 }}>
+              View All Reports <ArrowUpRight size={14} />
             </button>
           </div>
 
-          <div className="grid grid-cols-4 gap-4 pb-12">
+          <div className="grid grid-cols-4 gap-4 mb-6">
             {attendanceRoutes.map((rt, i) => (
-              <div key={i} className="card-white p-5">
-                <div className="flex justify-between items-center mb-4 text-xs font-bold font-mono tracking-wide">
-                  <span className="text-violet-900">ROUTE {rt.id}</span>
-                  <span className="text-violet-600">{rt.perc}</span>
+              <div key={i} className="card" style={{ padding: '18px 20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-4)', letterSpacing: '0.06em', textTransform: 'uppercase', fontFamily: 'JetBrains Mono, monospace' }}>
+                    ROUTE {rt.id}
+                  </span>
+                  <span style={{ fontSize: 13, fontWeight: 800, color: rt.color }}>{rt.perc}%</span>
                 </div>
-                <div className="font-bold text-[15px] text-violet-900 mb-1">{rt.name}</div>
-                <div className="text-[13px] text-violet-500 font-medium mb-6">{rt.students} Students Boarded</div>
-                
-                {i === 0 ? (
-                  <div className="flex">
-                     <div className="w-7 h-7 rounded-full bg-violet-200 border-2 border-white z-10"></div>
-                     <div className="w-7 h-7 rounded-full bg-violet-300 border-2 border-white -ml-2 z-20"></div>
-                     <div className="w-7 h-7 rounded-full bg-violet-400 border-2 border-white -ml-2 z-30"></div>
-                     <div className="w-7 h-7 rounded-full bg-violet-900 border-2 border-white -ml-2 z-40 text-white flex items-center justify-center text-[10px] font-bold">+21</div>
-                  </div>
-                ) : (
-                  <div className="prog-track h-1.5">
-                    <div className="prog-fill bg-violet-900" style={{ width: `${rt.prog}%` }}></div>
-                  </div>
-                )}
+                <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-1)', marginBottom: 3 }}>{rt.name}</div>
+                <div style={{ fontSize: 12, color: 'var(--text-4)', fontWeight: 500, marginBottom: 14 }}>{rt.students} Boarded</div>
+                <div className="prog-track">
+                  <div className="prog-fill" style={{ width: `${rt.perc}%`, background: rt.color }} />
+                </div>
               </div>
             ))}
           </div>
 
-          {/* FLOATING ACTION */}
-          <div className="absolute right-0 bottom-6 z-10">
-            <button className="glass text-white px-6 py-4 rounded-xl font-bold text-sm flex items-center gap-3">
-              <Plus size={18} /> Dispatch Emergency Bus
+          {/* Emergency Dispatch */}
+          <div style={{
+            background: 'linear-gradient(135deg, #1E293B, #0F172A)',
+            border: '1px solid rgba(255,255,255,0.06)',
+            borderRadius: 14, padding: '20px 24px',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          }}>
+            <div>
+              <div style={{ fontSize: 15, fontWeight: 700, color: 'white', marginBottom: 3 }}>Need to dispatch an emergency vehicle?</div>
+              <div style={{ fontSize: 12.5, color: '#64748B' }}>Instantly notify drivers and parents with one click.</div>
+            </div>
+            <button
+              className="btn-primary"
+              style={{ background: 'linear-gradient(135deg, #6366F1, #8B5CF6)', flexShrink: 0 }}
+            >
+              <Plus size={15} /> Dispatch Emergency Bus
             </button>
           </div>
         </div>
