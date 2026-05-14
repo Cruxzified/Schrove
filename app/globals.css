@@ -2,19 +2,19 @@
 @import "tailwindcss";
 
 :root {
-  --sidebar-w: 256px;
-  --topbar-h: 68px;
+  --sidebar-w: 260px;
+  --topbar-h: 70px;
 
-  /* Dark Sidebar */
-  --sidebar-bg: #0D1117;
-  --sidebar-border: rgba(255,255,255,0.06);
+  /* Dark Sidebar - Force Navy */
+  --sidebar-bg: #0D1117 !important;
+  --sidebar-border: rgba(255,255,255,0.08);
   --sidebar-text: #94A3B8;
-  --sidebar-text-active: #F1F5F9;
-  --sidebar-active-bg: rgba(99,102,241,0.15);
-  --sidebar-hover-bg: rgba(255,255,255,0.04);
+  --sidebar-text-active: #FFFFFF;
+  --sidebar-active-bg: rgba(99,102,241,0.16);
+  --sidebar-hover-bg: rgba(255,255,255,0.05);
 
   /* Main Area */
-  --bg: #F8FAFC;
+  --bg: #F8FAFC !important;
   --surface: #FFFFFF;
   --border: #E2E8F0;
   --border-light: #F1F5F9;
@@ -68,16 +68,17 @@ body {
 
 /* ══════════════════════════════ SIDEBAR ══════════════════════════════ */
 .sidebar {
-  width: var(--sidebar-w);
+  width: var(--sidebar-w) !important;
   flex-shrink: 0;
-  background: var(--sidebar-bg);
+  background: #0D1117 !important; /* Hardcoded navy to override everything */
   display: flex;
   flex-direction: column;
   height: 100vh;
   position: fixed;
   top: 0; left: 0;
-  z-index: 50;
+  z-index: 100;
   border-right: 1px solid var(--sidebar-border);
+  transition: width 0.2s ease;
 }
 
 .sidebar-brand {
