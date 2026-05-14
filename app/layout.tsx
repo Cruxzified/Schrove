@@ -3,7 +3,7 @@ import './globals.css';
 import { Toaster } from 'sonner';
 
 export const metadata: Metadata = {
-  title: 'Schrove - School Transport Intelligence',
+  title: 'EduPulse - School Transport Command Center',
   description: 'Premium AI-powered school transport operations dashboard.',
 };
 
