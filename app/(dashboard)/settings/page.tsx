@@ -10,7 +10,7 @@ const defaultSections: Section[] = [
   {
     title: 'General',
     desc: 'School identity and regional configuration',
-    icon: Globe, color: '#6366F1', bg: '#EEF2FF',
+    icon: Globe, color: 'var(--accent)', bg: 'var(--accent-light)',
     items: [
       { label: 'School Name',    type: 'text',   val: 'Central International School' },
       { label: 'Academic Year',  type: 'text',   val: '2025–2026'                   },
@@ -21,7 +21,7 @@ const defaultSections: Section[] = [
   {
     title: 'Notifications',
     desc: 'Alert thresholds and communication preferences',
-    icon: Bell, color: '#F59E0B', bg: '#FFFBEB',
+    icon: Bell, color: 'var(--amber)', bg: 'var(--amber-bg)',
     items: [
       { label: 'Idle Time Alert Threshold', type: 'number', val: '3'       },
       { label: 'Fuel Low Warning (%)',       type: 'number', val: '25'      },
@@ -33,7 +33,7 @@ const defaultSections: Section[] = [
   {
     title: 'Safety & Compliance',
     desc: 'Speed limits, attendance rules, and reporting schedules',
-    icon: Shield, color: '#10B981', bg: '#ECFDF5',
+    icon: Shield, color: 'var(--green)', bg: 'var(--green-bg)',
     items: [
       { label: 'Speed Limit Default (km/h)', type: 'number', val: '50'     },
       { label: 'Attendance Minimum (%)',     type: 'number', val: '75'     },
@@ -124,7 +124,7 @@ export default function SettingsPage() {
           <div style={{ marginTop: 24 }}>
             <button
               className="btn-primary"
-              style={{ width: '100%', background: saved ? '#10B981' : undefined, transition: 'background 0.3s' }}
+              style={{ width: '100%', background: saved ? 'var(--green)' : undefined, transition: 'background 0.3s' }}
               onClick={handleSave}
             >
               {saved ? <><Check size={15} /> Saved!</> : <><Save size={15} /> Save Changes</>}
@@ -206,10 +206,10 @@ export default function SettingsPage() {
           </div>
 
           {/* Danger zone */}
-          <div style={{ marginTop: 20, border: '1px solid rgba(239,68,68,0.2)', borderRadius: 14, overflow: 'hidden' }}>
-            <div style={{ padding: '12px 20px', background: '#FEF2F2', borderBottom: '1px solid rgba(239,68,68,0.15)', display: 'flex', alignItems: 'center', gap: 8 }}>
-              <Shield size={14} style={{ color: '#EF4444' }} />
-              <span style={{ fontSize: 13, fontWeight: 700, color: '#DC2626' }}>Danger Zone</span>
+          <div style={{ marginTop: 20, border: '1px solid var(--border)', borderRadius: 14, overflow: 'hidden' }}>
+            <div style={{ padding: '12px 20px', background: 'var(--red-bg)', borderBottom: '1px solid var(--border-light)', display: 'flex', alignItems: 'center', gap: 8 }}>
+              <Shield size={14} style={{ color: 'var(--red)' }} />
+              <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--red)' }}>Danger Zone</span>
             </div>
             <div style={{ padding: '14px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div>

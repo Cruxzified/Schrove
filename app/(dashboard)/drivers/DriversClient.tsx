@@ -10,9 +10,9 @@ type BusType = any;
 type RouteType = any;
 
 const statusBadge: Record<string, { bg: string; color: string }> = {
-  'active':   { bg: '#ECFDF5', color: '#059669' },
-  'inactive': { bg: '#F1F5F9', color: '#475569' },
-  'on-leave': { bg: '#FFFBEB', color: '#B45309' },
+  'active':   { bg: 'var(--green-bg)', color: 'var(--green)' },
+  'inactive': { bg: 'var(--sidebar-active-bg)', color: 'var(--text-3)' },
+  'on-leave': { bg: 'var(--amber-bg)', color: 'var(--amber)' },
 };
 
 export default function DriversClient({ initialDrivers, buses, routes }: { initialDrivers: Driver[], buses: BusType[], routes: RouteType[] }) {
@@ -73,8 +73,8 @@ export default function DriversClient({ initialDrivers, buses, routes }: { initi
       <div className="page-content" style={{ display: 'flex', gap: 24 }}>
 
         {/* LEFT FILTER PANEL */}
-        <div style={{ width: 260, flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 14 }}>
-          <div className="card" style={{ padding: '18px 18px 20px' }}>
+        <div style={{ width: 280, flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div className="card" style={{ padding: '24px' }}>
             <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-1)', marginBottom: 4 }}>Filters</div>
             
             {/* Search */}
@@ -128,9 +128,9 @@ export default function DriversClient({ initialDrivers, buses, routes }: { initi
                         <td>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                             <div style={{
-                              width: 36, height: 36, borderRadius: 10, background: '#10B981',
+                              width: 40, height: 40, borderRadius: 12, background: 'var(--green)',
                               color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                              fontSize: 12, fontWeight: 700, flexShrink: 0,
+                              fontSize: 13, fontWeight: 700, flexShrink: 0,
                             }}>{initials}</div>
                             <div>
                               <div style={{ fontSize: 13.5, fontWeight: 700, color: 'var(--text-1)' }}>{d.full_name}</div>

@@ -10,10 +10,10 @@ type BusType = any;
 type RouteType = any;
 
 const statusBadge: Record<string, { bg: string; color: string }> = {
-  'Onboard':  { bg: '#ECFDF5', color: '#059669' },
-  'At Stop':  { bg: '#FFFBEB', color: '#B45309' },
-  'Absent':   { bg: '#F1F5F9', color: '#475569' },
-  'active':   { bg: '#EEF2FF', color: '#4F46E5' },
+  'Onboard':  { bg: 'var(--green-bg)', color: 'var(--green)' },
+  'At Stop':  { bg: 'var(--amber-bg)', color: 'var(--amber)' },
+  'Absent':   { bg: 'var(--sidebar-active-bg)', color: 'var(--text-3)' },
+  'active':   { bg: 'var(--accent-muted)', color: 'var(--accent)' },
 };
 
 export default function StudentsClient({ initialStudents, buses, routes }: { initialStudents: Student[], buses: BusType[], routes: RouteType[] }) {
@@ -83,8 +83,8 @@ export default function StudentsClient({ initialStudents, buses, routes }: { ini
       <div className="page-content" style={{ display: 'flex', gap: 24 }}>
 
         {/* LEFT FILTER PANEL */}
-        <div style={{ width: 260, flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 14 }}>
-          <div className="card" style={{ padding: '18px 18px 20px' }}>
+        <div style={{ width: 280, flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div className="card" style={{ padding: '24px' }}>
             <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-1)', marginBottom: 4 }}>Filters</div>
             <div style={{ fontSize: 12, color: 'var(--text-4)', marginBottom: 18 }}>Refine student results</div>
 
@@ -174,9 +174,9 @@ export default function StudentsClient({ initialStudents, buses, routes }: { ini
                         <td>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                             <div style={{
-                              width: 36, height: 36, borderRadius: 10, background: '#6366F1',
+                              width: 40, height: 40, borderRadius: 12, background: 'var(--accent)',
                               color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                              fontSize: 12, fontWeight: 700, flexShrink: 0,
+                              fontSize: 13, fontWeight: 700, flexShrink: 0,
                             }}>{initials}</div>
                             <div>
                               <div style={{ fontSize: 13.5, fontWeight: 700, color: 'var(--text-1)' }}>{s.full_name}</div>

@@ -6,7 +6,7 @@ import Topbar from '@/components/Topbar';
 const allAlerts = [
   {
     id: 1, type: 'TRAFFIC DELAY', category: 'Traffic',
-    color: '#B45309', bg: '#FFFBEB', border: 'rgba(245,158,11,0.2)',
+    color: 'var(--amber)', bg: 'var(--amber-bg)', border: 'rgba(245,158,11,0.2)',
     icon: TrafficCone,
     title: 'Route A-12 experiencing a 12-min delay on 5th Ave.',
     desc: 'Heavy congestion reported near central intersection. Automatic re-routing protocol initiated for downstream stops.',
@@ -15,7 +15,7 @@ const allAlerts = [
   },
   {
     id: 2, type: 'ATTENDANCE CHANGE', category: 'Attendance',
-    color: '#2563EB', bg: '#EFF6FF', border: 'rgba(59,130,246,0.2)',
+    color: 'var(--blue)', bg: 'rgba(10,132,255,0.1)', border: 'rgba(10,132,255,0.2)',
     icon: BellOff,
     title: 'Sarah Smith marked absent for the afternoon run.',
     desc: 'Parent portal update received. Route B-08 manifesting stop list adjusted to bypass 42 Oak St.',
@@ -24,7 +24,7 @@ const allAlerts = [
   },
   {
     id: 3, type: 'ROUTE COMPLETE', category: 'System',
-    color: '#059669', bg: '#ECFDF5', border: 'rgba(16,185,129,0.2)',
+    color: 'var(--green)', bg: 'var(--green-bg)', border: 'rgba(48,209,88,0.2)',
     icon: CheckCircle2,
     title: 'Route B-08 finished ahead of schedule.',
     desc: "Final drop-off verified at 09:48 AM. Driver status set to 'Returning to Depot'. Efficiency rating: +8%.",
@@ -33,7 +33,7 @@ const allAlerts = [
   },
   {
     id: 4, type: 'DRIVER UPDATE', category: 'System',
-    color: '#7C3AED', bg: '#F5F3FF', border: 'rgba(124,58,237,0.2)',
+    color: 'var(--accent)', bg: 'var(--accent-light)', border: 'rgba(94,92,230,0.2)',
     icon: ArrowRightCircle,
     title: 'Marcus Thompson signed in to Bus 12.',
     desc: 'Pre-trip inspection checklist submitted and approved. GPS sync active.',
@@ -42,7 +42,7 @@ const allAlerts = [
   },
   {
     id: 5, type: 'SAFETY ALERT', category: 'Safety',
-    color: '#DC2626', bg: '#FEF2F2', border: 'rgba(239,68,68,0.2)',
+    color: 'var(--red)', bg: 'var(--red-bg)', border: 'rgba(255,69,58,0.2)',
     icon: Bell,
     title: 'Bus 004 exceeded speed limit on Highway 6.',
     desc: 'Speed recorded at 67 km/h in a 50 km/h zone. Driver has been automatically warned via in-cab alert system.',
@@ -108,9 +108,9 @@ export default function AlertsPage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 20 }}>
           {[
             { label: 'Total Alerts',    val: allAlerts.length,                                    color: 'var(--text-1)', bg: 'var(--surface)' },
-            { label: 'Unread',          val: unread,                                               color: '#DC2626',       bg: '#FEF2F2'        },
-            { label: 'Traffic',         val: allAlerts.filter(a => a.category === 'Traffic').length,   color: '#B45309', bg: '#FFFBEB'        },
-            { label: 'Safety',          val: allAlerts.filter(a => a.category === 'Safety').length,    color: '#7C3AED', bg: '#F5F3FF'        },
+            { label: 'Unread',          val: unread,                                               color: 'var(--red)',       bg: 'var(--red-bg)'        },
+            { label: 'Traffic',         val: allAlerts.filter(a => a.category === 'Traffic').length,   color: 'var(--amber)', bg: 'var(--amber-bg)'        },
+            { label: 'Safety',          val: allAlerts.filter(a => a.category === 'Safety').length,    color: 'var(--accent)', bg: 'var(--accent-light)'        },
           ].map(({ label, val, color, bg }) => (
             <div key={label} style={{ background: bg, border: '1px solid var(--border)', borderRadius: 12, padding: '14px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <span style={{ fontSize: 12.5, color: 'var(--text-4)', fontWeight: 500 }}>{label}</span>

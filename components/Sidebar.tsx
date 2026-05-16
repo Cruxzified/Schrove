@@ -24,7 +24,7 @@ export default function Sidebar() {
       <div className="sidebar-brand">
         <div className="sidebar-brand-logo">
           <div className="sidebar-brand-icon">
-            <Bus size={18} color="white" strokeWidth={2.5} />
+            <Bus size={20} color="white" strokeWidth={2.5} />
           </div>
           <div>
             <div className="sidebar-brand-name">EduPulse</div>
@@ -40,7 +40,7 @@ export default function Sidebar() {
           const active = pathname === href || (href !== '/' && pathname.startsWith(href));
           return (
             <Link key={href} href={href} className={`nav-item ${active ? 'active' : ''}`}>
-              <Icon size={17} strokeWidth={active ? 2.5 : 2} className="nav-icon" />
+              <Icon size={18} strokeWidth={active ? 2.5 : 2} className="nav-icon" />
               <span>{label}</span>
               {badge && <span className="nav-badge">{badge}</span>}
             </Link>
@@ -55,24 +55,25 @@ export default function Sidebar() {
           className={`nav-item ${pathname.startsWith('/settings') ? 'active' : ''}`}
           style={{ marginBottom: 0 }}
         >
-          <Settings size={17} strokeWidth={2} className="nav-icon" />
+          <Settings size={18} strokeWidth={2} className="nav-icon" />
           <span>Settings</span>
         </Link>
 
         {/* System status pill */}
         <div style={{
-          marginTop: 14,
-          background: 'rgba(16,185,129,0.1)',
-          border: '1px solid rgba(16,185,129,0.18)',
-          borderRadius: 8,
-          padding: '8px 12px',
+          marginTop: 16,
+          background: 'var(--green-bg)',
+          border: '1px solid var(--green-border)',
+          borderRadius: 12,
+          padding: '10px 14px',
           display: 'flex',
           alignItems: 'center',
-          gap: 8,
+          gap: 10,
+          boxShadow: 'var(--shadow-sm)'
         }}>
           <div className="live-dot" />
-          <span style={{ fontSize: 11.5, fontWeight: 600, color: '#34D399' }}>All Systems Live</span>
-          <Zap size={12} style={{ color: '#34D399', marginLeft: 'auto' }} />
+          <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--green)' }}>Systems Live</span>
+          <Zap size={14} style={{ color: 'var(--green)', marginLeft: 'auto' }} />
         </div>
       </div>
     </aside>
